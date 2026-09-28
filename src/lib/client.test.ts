@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { decodeResponse, examples, generate, type GenerationEvent } from './client'
 async function collect(stream: AsyncGenerator<GenerationEvent>) { const events: GenerationEvent[] = []; for await (const event of stream) events.push(event); return events }
-const request = { prompt: 'hello', maxTokens: 256, temperature: 0.7 }
+const request = { prompt: 'hello', model: 'qwen3-8b', maxTokens: 256, temperature: 0.7 }
 afterEach(() => { vi.unstubAllGlobals(); vi.useRealTimers() })
 describe('generation boundary', () => {
   it('posts the configured request and preserves reported metrics', async () => {
@@ -9,7 +9,7 @@ describe('generation boundary', () => {
     vi.stubGlobal('fetch', fetcher)
     const signal = new AbortController().signal
     const events = await collect(generate(request, signal, { mode: 'live', baseUrl: 'https://example.test/api/' }))
-    expect(fetcher).toHaveBeenCalledWith('https://example.test/api/generate', expect.objectContaining({ method: 'POST', signal, body: JSON.stringify({ prompt: 'hello', max_tokens: 256, temperature: 0.7 }) }))
+    expect(fetcher).toHaveBeenCalledWith('https://example.test/api/generate', expect.objectContaining({ method: 'POST', signal, body: JSON.stringify({ prompt: 'hello', model: 'qwen3-8b', max_tokens: 256, temperature: 0.7 }) }))
     expect(events).toEqual([{ type: 'delta', text: 'Hello' }, { type: 'metrics', metrics: { ttftMs: 12, outputTokens: 1 } }])
   })
   it('rejects HTTP and unsupported stream responses without falling back', async () => {

@@ -1,5 +1,10 @@
 export type Metrics = { ttftMs?: number; decodeTokensPerSecond?: number; outputTokens?: number; totalLatencyMs?: number }
-export type GenerationRequest = { prompt: string; maxTokens: number; temperature: number }
+export type GenerationRequest = { prompt: string; model: string; maxTokens: number; temperature: number }
+export const models = [
+  { id: 'qwen3-8b', label: 'Qwen3-8B' },
+  { id: 'gpt-oss-20b', label: 'gpt-oss-20B' },
+] as const
+export type ModelId = (typeof models)[number]['id']
 export type GenerationEvent = { type: 'delta'; text: string } | { type: 'metrics'; metrics: Metrics }
 export type ApiConfig = { mode: 'mock' | 'live'; baseUrl: string }
 export const config: ApiConfig = {
@@ -24,7 +29,7 @@ function delay(ms: number, signal: AbortSignal): Promise<void> {
  * Do not infer tokens or TTFT from network chunks or word counts.
  */
 export function encodeRequest(request: GenerationRequest) {
-  return { prompt: request.prompt, max_tokens: request.maxTokens, temperature: request.temperature }
+  return { prompt: request.prompt, model: request.model, max_tokens: request.maxTokens, temperature: request.temperature }
 }
 export function decodeResponse(value: unknown): { text: string; metrics: Metrics } {
   if (!value || typeof value !== 'object' || !('text' in value) || typeof value.text !== 'string') {

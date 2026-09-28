@@ -34,7 +34,7 @@ The client POSTs to `${VITE_API_BASE_URL}/generate` with an AbortSignal. A 120-s
 **The backend contract is not yet known.** `src/lib/client.ts` contains two explicit integration seams: `encodeRequest` and `decodeResponse`. The optional, non-streaming JSON adapter currently uses the following frontend convention; adapt it to your real server before enabling live mode:
 
 ```json
-{"prompt":"Explain the KV cache","max_tokens":256,"temperature":0.7}
+{"prompt":"Explain the KV cache","model":"qwen3-8b","max_tokens":256,"temperature":0.7}
 ```
 
 ```json

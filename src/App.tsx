@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
-import { config, examples, generate, type Metrics } from './lib/client'
+import { config, examples, generate, models, type Metrics, type ModelId } from './lib/client'
 import Blog from './Blog'
 import TerminalInput from './TerminalInput'
 import { findPost, routeFromHash } from './lib/blog'
 
-type Entry = { id: number; prompt: string; output: string; error: string; status: 'waiting' | 'generating' | 'complete' | 'stopped' | 'error' }
+type Entry = { id: number; prompt: string; model: string; output: string; error: string; status: 'waiting' | 'generating' | 'complete' | 'stopped' | 'error' }
 type Status = 'Ready' | 'Waiting' | 'Generating' | 'Complete' | 'Stopped' | 'Error'
 const mock = config.mode === 'mock'
 // TODO: replace with your profile URLs.
@@ -30,6 +30,7 @@ export default function App() {
   const [history, setHistory] = useState<Entry[]>([])
   const [metrics, setMetrics] = useState<Metrics>({})
   const [status, setStatus] = useState<Status>('Ready')
+  const [model, setModel] = useState<ModelId>(models[0].id)
   const [maxTokens, setMaxTokens] = useState(256)
   const [temperature, setTemperature] = useState(0.7)
   const [copyStatus, setCopyStatus] = useState('Copy output')
@@ -49,12 +50,12 @@ export default function App() {
     controller.current = active
     const id = ++entryId.current
     const patch = (change: (entry: Entry) => Entry) => setHistory(entries => entries.map(entry => entry.id === id ? change(entry) : entry))
-    setHistory(entries => [...entries, { id, prompt: prompt.trim(), output: '', error: '', status: 'waiting' as const }].slice(-30))
+    setHistory(entries => [...entries, { id, prompt: prompt.trim(), model, output: '', error: '', status: 'waiting' as const }].slice(-30))
     setPrompt(''); setMetrics({}); setCopyStatus('Copy output'); setStatus('Waiting'); followOutput.current = true
     termRef.current?.focus({ preventScroll: true })
     const timeout = window.setTimeout(() => active.abort(new Error('The request timed out after 120 seconds.')), 120_000)
     try {
-      for await (const event of generate({ prompt: prompt.trim(), maxTokens, temperature }, active.signal)) {
+      for await (const event of generate({ prompt: prompt.trim(), model, maxTokens, temperature }, active.signal)) {
         if (event.type === 'delta') { patch(entry => ({ ...entry, output: entry.output + event.text, status: 'generating' })); setStatus('Generating') }
         else setMetrics(previous => ({ ...previous, ...event.metrics }))
       }
@@ -85,7 +86,7 @@ export default function App() {
           {history.map(entry => <div className="term-entry" key={entry.id}>
             <p className="shell-command term-line"><span className="term-prefix">yoon@inference:~$ </span><span className="term-typed">{entry.prompt}</span></p>
             {entry.status === 'waiting' && <p className="shell-status" aria-hidden="true">[waiting] awaiting first token<span className="cursor" aria-hidden="true"/></p>}
-            {entry.output && <p className="response-text">{entry.output}{entry.status === 'generating' && <span className="cursor" aria-hidden="true"/>}</p>}
+            {entry.output && <p className="shell-command term-line response-line"><span className="term-prefix out-prefix" aria-hidden="true">{entry.model}:~$ </span><span className="response-text">{entry.output}{entry.status === 'generating' && <span className="cursor" aria-hidden="true"/>}</span></p>}
             {entry.error && <p className="error-message" role="alert">{entry.error}</p>}
             {(entry.status === 'stopped' || entry.status === 'error') && <p className="shell-status" aria-hidden="true">[{entry.status}]</p>}
           </div>)}
@@ -96,10 +97,10 @@ export default function App() {
         <section className="instrument-panel" aria-label="Generation controls and benchmarks">
           <div className="instrument-heading"><h3>Generation / benchmarks</h3><button className="copy-button" type="button" onClick={() => void copy()} disabled={!output || busy}>{copyStatus}</button></div>
             <div className="examples flex flex-wrap gap-2"><span>Try</span>{examples.map(example => <button key={example.label} type="button" disabled={busy} onClick={() => setPrompt(example.prompt)}>{example.label} <span aria-hidden="true">↗</span></button>)}</div>
-            <div className="controls flex flex-wrap items-center justify-between gap-4"><div className="flex flex-wrap items-center gap-5"><label>Max tokens <select value={maxTokens} onChange={event => setMaxTokens(Number(event.target.value))} disabled={busy || mock}><option>128</option><option>256</option><option>512</option><option>1024</option></select></label><label>Temperature <select value={temperature} onChange={event => setTemperature(Number(event.target.value))} disabled={busy || mock}><option>0</option><option>0.3</option><option>0.7</option><option>1</option></select></label></div>{busy ? <button type="button" className="generate" onClick={() => controller.current?.abort()}>Stop <span aria-hidden="true">■</span></button> : <button type="submit" form="generation-form" className="generate" disabled={!prompt.trim()}>Generate <span aria-hidden="true">↵</span></button>}</div>
+            <div className="controls flex flex-wrap items-center justify-between gap-4"><div className="flex flex-wrap items-center gap-5"><label>Model <select value={model} onChange={event => setModel(event.target.value as ModelId)} disabled={busy}>{models.map(option => <option key={option.id} value={option.id}>{option.label}</option>)}</select></label><label>Max tokens <select value={maxTokens} onChange={event => setMaxTokens(Number(event.target.value))} disabled={busy || mock}><option>128</option><option>256</option><option>512</option><option>1024</option></select></label><label>Temperature <select value={temperature} onChange={event => setTemperature(Number(event.target.value))} disabled={busy || mock}><option>0</option><option>0.3</option><option>0.7</option><option>1</option></select></label></div>{busy ? <button type="button" className="generate" onClick={() => controller.current?.abort()}>Stop <span aria-hidden="true">■</span></button> : <button type="submit" form="generation-form" className="generate" disabled={!prompt.trim()}>Generate <span aria-hidden="true">↵</span></button>}</div>
         <div className="metrics" aria-label="Inference metrics"><Metric label="Time to first token" value={metrics.ttftMs} unit="ms" title="Engine-reported time to first token"/><Metric label="Decode throughput" value={metrics.decodeTokensPerSecond} unit="tok/s" title="Engine-reported decode throughput"/><Metric label="Output tokens" value={metrics.outputTokens} unit="tokens" title="Actual tokenizer count reported by the engine"/><Metric label="Total latency" value={metrics.totalLatencyMs === undefined ? undefined : metrics.totalLatencyMs / 1000} unit="s" title="Engine-reported total latency"/></div>
         </section>
-        <div className="window-status"><span>{mock ? 'Sample mode. Generation settings apply to live requests only.' : 'POST /generate · JSON adapter'} </span><span className="resize-mark" aria-hidden="true">◩</span></div>
+        <div className="window-status"><span>{mock ? 'Sample mode. Max tokens and temperature apply to live requests only.' : 'POST /generate · JSON adapter'} </span><span className="resize-mark" aria-hidden="true">◩</span></div>
       </section>
       <div className="below-window flex flex-wrap justify-between gap-3"><p><span className="footnote-mark">↳</span> Built to understand what happens between prompt and token.</p><p className="mono">Enter to run · Shift + Enter for a new line · Ctrl + C to stop</p></div>
       <section className="mac-window overview" aria-labelledby="overview-title">

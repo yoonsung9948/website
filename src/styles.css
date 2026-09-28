@@ -125,3 +125,9 @@
 .shell-status{margin:2px 0 0;color:#7f8c74}
 @media(max-width:700px){.term-input{font-size:13px}}
 @media(prefers-reduced-motion:reduce){.term-cursor{animation:none}}
+
+/* Model-name prefix on output lines */
+.shell-command>.out-prefix:first-child,.out-prefix{color:#7f8c74}
+.response-line{margin:2px 0 0}
+.response-line .response-text{margin:0;min-width:0}
+.instrument-panel .controls select{max-width:100%}

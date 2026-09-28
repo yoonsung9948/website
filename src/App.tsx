@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { config, examples, generate, type Metrics } from './lib/client'
 import Blog from './Blog'
+import TerminalInput from './TerminalInput'
 import { findPost, routeFromHash } from './lib/blog'
 
+type Entry = { id: number; prompt: string; output: string; error: string; status: 'waiting' | 'generating' | 'complete' | 'stopped' | 'error' }
 type Status = 'Ready' | 'Waiting' | 'Generating' | 'Complete' | 'Stopped' | 'Error'
 const mock = config.mode === 'mock'
 // TODO: replace with your profile URLs.
@@ -24,35 +26,42 @@ export default function App() {
     return () => window.removeEventListener('hashchange', navigate)
   }, [])
   useEffect(() => { document.title = page === 'about' ? 'Yoon — About me' : page === 'blog' ? `Yoon — ${slug ? findPost(slug)?.title ?? 'Not found' : 'Blog'}` : 'Yoon — Inference Playground' }, [page, slug])
-  const [prompt, setPrompt] = useState(examples[0].prompt)
-  const [output, setOutput] = useState('')
+  const [prompt, setPrompt] = useState('')
+  const [history, setHistory] = useState<Entry[]>([])
   const [metrics, setMetrics] = useState<Metrics>({})
   const [status, setStatus] = useState<Status>('Ready')
-  const [error, setError] = useState('')
   const [maxTokens, setMaxTokens] = useState(256)
   const [temperature, setTemperature] = useState(0.7)
   const [copyStatus, setCopyStatus] = useState('Copy output')
   const controller = useRef<AbortController | null>(null)
-  const outputRef = useRef<HTMLDivElement>(null)
+  const termRef = useRef<HTMLDivElement>(null)
+  const entryId = useRef(0)
+  const output = history.at(-1)?.output ?? ''
+  const canHover = () => window.matchMedia('(hover: hover)').matches
   const followOutput = useRef(true)
   const busy = status === 'Waiting' || status === 'Generating'
   useEffect(() => () => controller.current?.abort(), [])
-  useEffect(() => { if (followOutput.current && outputRef.current) outputRef.current.scrollTop = outputRef.current.scrollHeight }, [output])
+  useEffect(() => { if (followOutput.current && termRef.current) termRef.current.scrollTop = termRef.current.scrollHeight }, [history, prompt])
+  useEffect(() => { if (page === 'playground' && canHover()) document.getElementById('prompt')?.focus({ preventScroll: true }) }, [page])
   async function run() {
     if (controller.current || !prompt.trim()) return
     const active = new AbortController()
     controller.current = active
-    setOutput(''); setMetrics({}); setError(''); setCopyStatus('Copy output'); setStatus('Waiting'); followOutput.current = true
+    const id = ++entryId.current
+    const patch = (change: (entry: Entry) => Entry) => setHistory(entries => entries.map(entry => entry.id === id ? change(entry) : entry))
+    setHistory(entries => [...entries, { id, prompt: prompt.trim(), output: '', error: '', status: 'waiting' as const }].slice(-30))
+    setPrompt(''); setMetrics({}); setCopyStatus('Copy output'); setStatus('Waiting'); followOutput.current = true
+    termRef.current?.focus({ preventScroll: true })
     const timeout = window.setTimeout(() => active.abort(new Error('The request timed out after 120 seconds.')), 120_000)
     try {
       for await (const event of generate({ prompt: prompt.trim(), maxTokens, temperature }, active.signal)) {
-        if (event.type === 'delta') { setOutput(previous => previous + event.text); setStatus('Generating') }
+        if (event.type === 'delta') { patch(entry => ({ ...entry, output: entry.output + event.text, status: 'generating' })); setStatus('Generating') }
         else setMetrics(previous => ({ ...previous, ...event.metrics }))
       }
-      setStatus('Complete')
+      patch(entry => ({ ...entry, status: 'complete' })); setStatus('Complete')
     } catch (cause) {
-      if (active.signal.aborted && active.signal.reason?.name === 'AbortError') setStatus('Stopped')
-      else { setStatus('Error'); setError(cause instanceof Error ? cause.message : 'Unable to reach the API. Check the connection and CORS settings.') }
+      if (active.signal.aborted && active.signal.reason?.name === 'AbortError') { patch(entry => ({ ...entry, status: 'stopped' })); setStatus('Stopped') }
+      else { const message = cause instanceof Error ? cause.message : 'Unable to reach the API. Check the connection and CORS settings.'; patch(entry => ({ ...entry, status: 'error', error: message })); setStatus('Error') }
     } finally { clearTimeout(timeout); controller.current = null }
   }
   async function copy() {
@@ -67,21 +76,22 @@ export default function App() {
       <section className="mac-window" aria-label="Inference playground">
         <div className="window-title"><span className="window-box" aria-hidden="true"/><div className="title-lines" aria-hidden="true"/><h2>inference — playground</h2><div className="title-lines" aria-hidden="true"/><span className="window-box small" aria-hidden="true"/></div>
         <div className="toolbar flex flex-wrap items-center justify-between gap-3"><div className="flex items-center gap-3"><span className="mode-badge"><span className="status-square"/>{mock ? 'Sample mode' : 'Live API'}</span><span className="toolbar-note">{mock ? 'Authored responses · no model connected' : 'Custom inference endpoint'}</span></div><span className="mono text-xs">SESSION / 001</span></div>
-        <div className="terminal">
-          <form id="generation-form" onSubmit={event => { event.preventDefault(); void run() }}>
-            <div className="terminal-banner"><p>Inference shell / v0.1</p><p>{mock ? "Sample session. No model connected." : "Live API endpoint configured."}</p></div><label className="shell-command" htmlFor="prompt"><span>yoon@inference</span>:~$ generate</label>
-            <div className="prompt-line"><span aria-hidden="true">&gt;</span><textarea id="prompt" value={prompt} onChange={event => setPrompt(event.target.value)} onKeyDown={event => { if (event.key === 'Enter' && (event.metaKey || event.ctrlKey) && !event.nativeEvent.isComposing) { event.preventDefault(); void run() } }} disabled={busy} maxLength={16000} rows={3} placeholder="Ask the model something…" spellCheck={false}/></div>
-
-          </form>
-          <div className="response-section">
-            <div className="shell-status" role="status" aria-live="polite">[{status.toLowerCase()}]{status === 'Ready' ? ' awaiting prompt' : status === 'Waiting' ? ' awaiting first token' : ''}</div>
-            <div ref={outputRef} className="output" tabIndex={0} role="region" aria-label="Generated output" aria-busy={busy} onScroll={event => { const el = event.currentTarget; followOutput.current = el.scrollHeight - el.scrollTop - el.clientHeight < 40 }}>
-              {output && <p className="response-text">{output}{busy && <span className="cursor" aria-hidden="true"/>}</p>}
-              {!output && <p className="terminal-idle">{busy ? '' : '# Run a prompt to begin.'}<span className="cursor" aria-hidden="true"/></p>}
-              {output && !busy && <p className="shell-command terminal-return"><span>yoon@inference</span>:~$ <span className="cursor" aria-hidden="true"/></p>}
-            </div>
-            {error && <p className="error-message" role="alert">{error}</p>}
-          </div>
+        <div ref={termRef} className="terminal" tabIndex={0} role="region" aria-label="Terminal" aria-busy={busy}
+          onClick={() => { if (!window.getSelection()?.toString()) document.getElementById('prompt')?.focus({ preventScroll: true }) }}
+          onKeyDown={event => { if (busy && event.ctrlKey && event.key.toLowerCase() === 'c') { event.preventDefault(); controller.current?.abort() } }}
+          onScroll={event => { const el = event.currentTarget; followOutput.current = el.scrollHeight - el.scrollTop - el.clientHeight < 40 }}>
+          <div className="sr-only" role="status">{status === 'Ready' ? '' : status}</div>
+          <div className="terminal-banner"><p>Inference shell / v0.1</p><p>{mock ? "Sample session. No model connected." : "Live API endpoint configured."}</p></div>
+          {history.map(entry => <div className="term-entry" key={entry.id}>
+            <p className="shell-command term-line"><span className="term-prefix">yoon@inference:~$ </span><span className="term-typed">{entry.prompt}</span></p>
+            {entry.status === 'waiting' && <p className="shell-status" aria-hidden="true">[waiting] awaiting first token<span className="cursor" aria-hidden="true"/></p>}
+            {entry.output && <p className="response-text">{entry.output}{entry.status === 'generating' && <span className="cursor" aria-hidden="true"/>}</p>}
+            {entry.error && <p className="error-message" role="alert">{entry.error}</p>}
+            {(entry.status === 'stopped' || entry.status === 'error') && <p className="shell-status" aria-hidden="true">[{entry.status}]</p>}
+          </div>)}
+          {!busy && <form id="generation-form" className="term-entry" onSubmit={event => { event.preventDefault(); void run() }}>
+            <div className="shell-command term-line"><span className="term-prefix" aria-hidden="true">yoon@inference:~$ </span><TerminalInput value={prompt} onChange={setPrompt} onSubmit={() => void run()} placeholder="Ask the model something…" autoFocus={history.length > 0 && canHover()}/></div>
+          </form>}
         </div>
         <section className="instrument-panel" aria-label="Generation controls and benchmarks">
           <div className="instrument-heading"><h3>Generation / benchmarks</h3><button className="copy-button" type="button" onClick={() => void copy()} disabled={!output || busy}>{copyStatus}</button></div>
@@ -91,7 +101,7 @@ export default function App() {
         </section>
         <div className="window-status"><span>{mock ? 'Sample mode. Generation settings apply to live requests only.' : 'POST /generate · JSON adapter'} </span><span className="resize-mark" aria-hidden="true">◩</span></div>
       </section>
-      <div className="below-window flex flex-wrap justify-between gap-3"><p><span className="footnote-mark">↳</span> Built to understand what happens between prompt and token.</p><p className="mono">⌘ / Ctrl + Enter to generate</p></div>
+      <div className="below-window flex flex-wrap justify-between gap-3"><p><span className="footnote-mark">↳</span> Built to understand what happens between prompt and token.</p><p className="mono">Enter to run · Shift + Enter for a new line · Ctrl + C to stop</p></div>
       <section className="mac-window overview" aria-labelledby="overview-title">
         <div className="window-title"><span className="window-box" aria-hidden="true"/><div className="title-lines" aria-hidden="true"/><h2 id="overview-title">inference — about.txt</h2><div className="title-lines" aria-hidden="true"/></div>
         <div className="about-content"><p className="sample-label">ABOUT THIS PLAYGROUND</p><h2>What is this?</h2><p>A small inference platform, built from scratch: a Go control plane in front of a custom engine that serves a single model. This page is the front door. Type a prompt, watch the reply arrive, and read the timings the engine reports.</p>

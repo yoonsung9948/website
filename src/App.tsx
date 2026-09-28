@@ -8,6 +8,7 @@ const mock = config.mode === 'mock'
 // TODO: replace with your profile URLs.
 const GITHUB_URL = 'https://github.com/yoonsung9948'
 const LINKEDIN_URL = 'https://www.linkedin.com/in/yoonsunghwang'
+const REPO_URL = 'https://github.com/yoonsung9948/relay'
 const iconProps = { width: 22, height: 22, viewBox: '0 0 24 24', fill: 'currentColor', 'aria-hidden': true } as const
 function Metric({ label, value, unit, title }: { label: string; value?: number; unit: string; title: string }) {
   return <div className="metric" title={title}><span>{label}</span><div><strong>{value === undefined ? '—' : value.toLocaleString(undefined, { maximumFractionDigits: 1 })}</strong><small>{unit}</small></div></div>
@@ -90,6 +91,13 @@ export default function App() {
         <div className="window-status"><span>{mock ? 'Sample mode. Generation settings apply to live requests only.' : 'POST /generate · JSON adapter'} </span><span className="resize-mark" aria-hidden="true">◩</span></div>
       </section>
       <div className="below-window flex flex-wrap justify-between gap-3"><p><span className="footnote-mark">↳</span> Built to understand what happens between prompt and token.</p><p className="mono">⌘ / Ctrl + Enter to generate</p></div>
+      <section className="mac-window overview" aria-labelledby="overview-title">
+        <div className="window-title"><span className="window-box" aria-hidden="true"/><div className="title-lines" aria-hidden="true"/><h2 id="overview-title">inference — about.txt</h2><div className="title-lines" aria-hidden="true"/></div>
+        <div className="about-content"><p className="sample-label">ABOUT THIS PLAYGROUND</p><h2>What is this?</h2><p>A small inference platform, built from scratch: a Go control plane in front of a custom engine that serves a single model. This page is the front door. Type a prompt, watch the reply arrive, and read the timings the engine reports.</p>
+          <div className="about-details three"><section><h3>What you’re looking at</h3><p>A terminal-style client for the engine. Time to first token, decode throughput, token count and total latency all come from the server, never from a guess in the browser.</p></section><section><h3>Where it stands</h3><p>Work in progress. While no engine is connected, the playground runs in sample mode with authored responses and shows no invented performance numbers.</p></section><section><h3>Follow along</h3><p>Design notes and benchmark write-ups go on the <a className="inline-link" href="#blog">blog</a>. The code is open, and everything is built in public.</p></section></div>
+          <a className="about-link" href={REPO_URL} target="_blank" rel="noopener noreferrer">View the source on GitHub <span aria-hidden="true">↗</span></a></div>
+        <div className="window-status"><span>Small surface. Deep stack.</span><span className="resize-mark" aria-hidden="true">◩</span></div>
+      </section>
     </main>
     {page === 'blog' && <main className="page-shell blog-page flex-1"><Blog slug={slug}/></main>}
     <main className="page-shell about-page flex-1" hidden={page !== 'about'}>

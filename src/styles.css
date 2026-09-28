@@ -96,3 +96,12 @@
 .about-links a{display:grid;place-items:center;width:44px;height:44px;border:1px solid #aab49e;background:#fafbf5;color:#3e4934;box-shadow:2px 2px 0 #b7c0aa}
 .about-links a:hover{background:var(--accent);border-color:#82916e}
 .about-links a:active{box-shadow:none;transform:translate(2px,2px)}
+
+/* Landing overview */
+.overview{margin-top:40px}
+.overview .about-content{padding:36px 48px 40px;max-width:none}
+.overview .about-content>p:not(.sample-label){max-width:760px}
+.about-details.three{grid-template-columns:repeat(3,1fr);gap:32px}
+.inline-link{border-bottom:1px solid #7e896e}.inline-link:hover{background:var(--accent)}
+@media(max-width:900px){.about-details.three{grid-template-columns:1fr;gap:24px}}
+@media(max-width:700px){.overview{margin-top:28px}.overview .about-content{padding:28px 22px}}

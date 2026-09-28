@@ -1,19 +1,27 @@
 import { useEffect, useRef, useState } from 'react'
 import { config, examples, generate, type Metrics } from './lib/client'
+import Blog from './Blog'
+import { findPost, routeFromHash } from './lib/blog'
 
 type Status = 'Ready' | 'Waiting' | 'Generating' | 'Complete' | 'Stopped' | 'Error'
 const mock = config.mode === 'mock'
+// TODO: replace with your profile URLs.
+const GITHUB_URL = 'https://github.com/yoonsung9948'
+const LINKEDIN_URL = 'https://www.linkedin.com/in/yoonsunghwang'
+const iconProps = { width: 22, height: 22, viewBox: '0 0 24 24', fill: 'currentColor', 'aria-hidden': true } as const
 function Metric({ label, value, unit, title }: { label: string; value?: number; unit: string; title: string }) {
   return <div className="metric" title={title}><span>{label}</span><div><strong>{value === undefined ? '—' : value.toLocaleString(undefined, { maximumFractionDigits: 1 })}</strong><small>{unit}</small></div></div>
 }
 export default function App() {
-  const [page, setPage] = useState(() => location.hash.startsWith('#about') ? 'about' : 'playground')
+  const [route, setRoute] = useState(() => routeFromHash(location.hash))
+  const page = route.page
+  const slug = route.page === 'blog' ? route.slug : undefined
   useEffect(() => {
-    const navigate = () => setPage(location.hash.startsWith('#about') ? 'about' : 'playground')
+    const navigate = () => { setRoute(routeFromHash(location.hash)); window.scrollTo(0, 0) }
     window.addEventListener('hashchange', navigate)
     return () => window.removeEventListener('hashchange', navigate)
   }, [])
-  useEffect(() => { document.title = page === 'about' ? 'Yoon — About me' : 'Yoon — Inference Playground' }, [page])
+  useEffect(() => { document.title = page === 'about' ? 'Yoon — About me' : page === 'blog' ? `Yoon — ${slug ? findPost(slug)?.title ?? 'Not found' : 'Blog'}` : 'Yoon — Inference Playground' }, [page, slug])
   const [prompt, setPrompt] = useState(examples[0].prompt)
   const [output, setOutput] = useState('')
   const [metrics, setMetrics] = useState<Metrics>({})
@@ -50,8 +58,8 @@ export default function App() {
     catch { setCopyStatus('Copy unavailable — select text') }
   }
   return <div className="min-h-screen flex flex-col">
-    <a className="skip-link" href={page === 'about' ? '#about-heading' : '#prompt'}>Skip to content</a>
-    <header className="menu-bar"><div className="menu-inner"><a className="identity" href="#playground" aria-label="Yoon home">Yoon</a><nav aria-label="Main navigation"><a href="#playground" aria-current={page === 'playground' ? 'page' : undefined}>Playground</a><a href="#about" aria-current={page === 'about' ? 'page' : undefined}>About me</a></nav><span className="menu-note">Personal computing, again.</span></div></header>
+    <a className="skip-link" href={page === 'about' ? '#about-heading' : '#prompt'} onClick={page === 'blog' ? event => { event.preventDefault(); document.getElementById('blog-heading')?.focus() } : undefined}>Skip to content</a>
+    <header className="menu-bar"><div className="menu-inner"><a className="identity" href="#playground" aria-label="Yoon home"><img className="brand-logo" src={`${import.meta.env.BASE_URL}favicon.svg`} alt="" width="26" height="26"/>Yoon</a><nav aria-label="Main navigation"><a href="#playground" aria-current={page === 'playground' ? 'page' : undefined}>Playground</a><a href="#blog" aria-current={page === 'blog' ? 'page' : undefined}>Blog</a><a href="#about" aria-current={page === 'about' ? 'page' : undefined}>About me</a></nav><span className="menu-note">Personal computing, again.</span></div></header>
     <main id="playground" className="page-shell flex-1" hidden={page !== 'playground'}>
       <div className="intro flex items-end justify-between gap-4"><div><p className="eyebrow">INDEPENDENT SYSTEMS / EXPERIMENT 001</p><h1>Inference playground<span className="period">.</span></h1><p className="intro-description">A custom engine. A Go control plane. A place to try it.</p></div><span className="edition">WORK IN PROGRESS<br/>REVISION 0.1</span></div>
       <section className="mac-window" aria-label="Inference playground">
@@ -83,11 +91,12 @@ export default function App() {
       </section>
       <div className="below-window flex flex-wrap justify-between gap-3"><p><span className="footnote-mark">↳</span> Built to understand what happens between prompt and token.</p><p className="mono">⌘ / Ctrl + Enter to generate</p></div>
     </main>
+    {page === 'blog' && <main className="page-shell blog-page flex-1"><Blog slug={slug}/></main>}
     <main className="page-shell about-page flex-1" hidden={page !== 'about'}>
       <div className="intro"><p className="eyebrow">A LITTLE CONTEXT</p><h1 id="about-heading" tabIndex={-1}>About me<span className="period">.</span></h1><p className="intro-description">The person behind the playground.</p></div>
       <section className="mac-window" aria-labelledby="about-title">
         <div className="window-title"><span className="window-box" aria-hidden="true"/><div className="title-lines" aria-hidden="true"/><h2 id="about-title">yoon — readme.txt</h2><div className="title-lines" aria-hidden="true"/></div>
-        <div className="about-content"><p className="sample-label">SAMPLE BIO / EDIT TO MAKE IT YOURS</p><h2>Hi, I’m Yoon.</h2><p>I’m building a custom inference platform: a Go control plane and an engine that turns prompts into tokens. This site is my working space for that project.</p><p>I’m interested in how systems behave under real constraints — fixed hardware, limited memory, and a latency budget. I like understanding where the time goes, then making the critical path faster.</p><div className="about-details"><section><h3>Currently building</h3><p>An inference engine and a small playground to make its behavior visible.</p></section><section><h3>Things I’m exploring</h3><p>Scheduling, KV cache management, GPU utilization, and honest performance measurement.</p></section></div><a className="about-link" href="#playground">Back to the playground <span aria-hidden="true">↗</span></a></div>
+        <div className="about-content"><p className="sample-label">SAMPLE BIO / EDIT TO MAKE IT YOURS</p><h2>Hi, I’m Yoon.</h2><p>I’m building a custom inference platform: a Go control plane and an engine that turns prompts into tokens. This site is my working space for that project.</p><p>I’m interested in how systems behave under real constraints — fixed hardware, limited memory, and a latency budget. I like understanding where the time goes, then making the critical path faster.</p><div className="about-details"><section><h3>Currently building</h3><p>An inference engine and a small playground to make its behavior visible.</p></section><section><h3>Things I’m exploring</h3><p>Scheduling, KV cache management, GPU utilization, and honest performance measurement.</p></section><section className="about-links"><h3>Links</h3><ul><li><a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg {...iconProps}><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.42c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.36-3.88-1.36-.52-1.34-1.28-1.7-1.28-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.69 5.39-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg></a></li><li><a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><svg {...iconProps}><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg></a></li></ul></section></div><a className="about-link" href="#playground">Back to the playground <span aria-hidden="true">↗</span></a></div>
         <div className="window-status"><span>A short introduction. More to come.</span><span className="resize-mark" aria-hidden="true">◩</span></div>
       </section>
     </main>

@@ -17,12 +17,27 @@ export async function readEngineState(signal: AbortSignal, settings = config): P
   return body.state
 }
 
+export class NoGpuAvailableError extends Error {
+  constructor() {
+    super('No GPUs are available right now. Please try again in a few minutes.')
+    this.name = 'NoGpuAvailableError'
+  }
+}
+
 export async function requestEngineStart(signal: AbortSignal, settings = config): Promise<void> {
   const response = await fetch(endpoint('start_engine', settings), { method: 'POST', signal })
-  const body = await response.text()
-  // The current Go handler writes a 200 prefix before reporting errors. Check its
-  // legacy text too; acceptance still does not mean the GPU/model is ready.
-  if (!response.ok || /error starting engine/i.test(body)) {
+  // Errors may be JSON (capacity) or plain text (http.Error / proxy failures).
+  const text = await response.text()
+  let body: unknown
+  try { body = JSON.parse(text) } catch { body = undefined }
+  if (response.status === 503 && body && typeof body === 'object' && 'error' in body && body.error === 'no_gpu_available') {
+    throw new NoGpuAvailableError()
+  }
+  if (!response.ok) {
     throw new Error(`The start request was not accepted (HTTP ${response.status}). Check engine status before trying again.`)
   }
+  if (response.status !== 202 || !body || typeof body !== 'object' || !('status' in body) || body.status !== 'starting') {
+    throw new Error('The engine returned an unexpected startup response. Check engine status before trying again.')
+  }
+  // Accepted means startup is in progress. Health polling determines readiness.
 }

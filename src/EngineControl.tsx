@@ -1,18 +1,19 @@
 import { useEffect, useRef, useState } from 'react'
 import { config } from './lib/client'
-import { readEngineState, requestEngineStart, type EngineState } from './lib/engine'
+import { NoGpuAvailableError, readEngineState, requestEngineStart, type EngineState } from './lib/engine'
 
-const labels: Record<EngineState, string> = {
+type DisplayState = EngineState | 'no_gpu_available'
+const labels: Record<DisplayState, string> = {
   offline: 'Offline', provisioning: 'Provisioning', starting: 'Starting',
   loading_model: 'Loading model', warming: 'Warming up', ready: 'Ready',
-  error: 'Engine error', shutting_down: 'Shutting down',
+  error: 'Engine error', shutting_down: 'Shutting down', no_gpu_available: 'No GPUs available',
 }
 
 export type EngineDisplayStatus = { label: string; message: string; loading: boolean }
 
 export default function EngineControl({ generating, onStatusChange }: { generating: boolean; onStatusChange: (status: EngineDisplayStatus) => void }) {
   const sample = config.mode !== 'live'
-  const [state, setState] = useState<EngineState | 'unknown'>('unknown')
+  const [state, setState] = useState<DisplayState | 'unknown'>('unknown')
   const [pending, setPending] = useState(false)
   const [message, setMessage] = useState('')
   const [needsCheck, setNeedsCheck] = useState(false)
@@ -31,7 +32,7 @@ export default function EngineControl({ generating, onStatusChange }: { generati
     const controller = new AbortController()
     active.current = controller
     const timeout = window.setTimeout(() => controller.abort(new Error('Status checks timed out. The engine may still be starting.')), 300_000)
-    setPending(true); setMessage('Checking engine…')
+    setPending(true); setState('unknown'); setMessage('Checking engine…')
     const signal = AbortSignal.any([controller.signal, AbortSignal.timeout(310_000)])
     const requestSignal = () => AbortSignal.any([signal, AbortSignal.timeout(55_000)])
     try {
@@ -64,7 +65,8 @@ export default function EngineControl({ generating, onStatusChange }: { generati
         setState(current)
       }
     } catch (error) {
-      setState('unknown'); setNeedsCheck(true)
+      const noCapacity = error instanceof NoGpuAvailableError
+      setState(noCapacity ? 'no_gpu_available' : 'unknown'); setNeedsCheck(!noCapacity)
       setMessage(error instanceof Error ? error.message : 'Unable to reach the control plane. Check status before retrying.')
     } finally {
       clearTimeout(timeout); active.current = null; setPending(false)
@@ -73,6 +75,6 @@ export default function EngineControl({ generating, onStatusChange }: { generati
 
   return <div className="engine-control">
     <div className="engine-description"><span className="engine-label">Engine <span className="engine-state">{sample ? 'Sample mode' : state === 'unknown' ? 'Status unknown' : labels[state]}</span></span><p id="engine-status">{sample ? 'Connect the live API to start the engine.' : message || 'Start the engine before sending your first prompt.'}</p></div>
-    <button type="button" className="engine-start" disabled={sample || pending || generating} aria-describedby="engine-status" onClick={() => void start()}><span aria-hidden="true">⏻</span> {pending ? 'Starting…' : needsCheck || state === 'ready' ? 'Check status' : 'Start engine'}</button>
+    <button type="button" className="engine-start" disabled={sample || pending || generating} aria-describedby="engine-status" onClick={() => void start()}><span aria-hidden="true">⏻</span> {pending ? 'Starting…' : needsCheck || state === 'ready' ? 'Check status' : state === 'no_gpu_available' ? 'Try again' : 'Start engine'}</button>
   </div>
 }

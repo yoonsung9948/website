@@ -7,11 +7,10 @@ export const onRequestPost = async ({ env }: { env: Env }) => {
       method: 'POST', headers: { 'X-Demo-Key': env.DEMO_KEY }, signal: AbortSignal.timeout(50_000),
     })
     const body = await upstream.text()
-    const headers = new Headers({ 'Content-Type': 'text/plain', 'Cache-Control': 'no-store' })
+    const headers = new Headers({ 'Content-Type': upstream.headers.get('Content-Type') ?? 'text/plain', 'Cache-Control': 'no-store' })
     const retry = upstream.headers.get('Retry-After')
     if (retry) headers.set('Retry-After', retry)
-    // Normalize the current handler's error-after-200 behavior.
-    return new Response(body, { status: upstream.ok && /error starting engine/i.test(body) ? 502 : upstream.status, headers })
+    return new Response(body, { status: upstream.status, headers })
   } catch {
     return new Response('start request could not be confirmed; check engine status', { status: 503 })
   }

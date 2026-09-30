@@ -131,3 +131,12 @@
 .response-line{margin:2px 0 0}
 .response-line .response-text{margin:0;min-width:0}
 .instrument-panel .controls select{max-width:100%}
+
+/* Engine lifecycle, integrated with the existing instrument panel. */
+.engine-control{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px 20px;border-top:1px solid #d1d6c8}
+.engine-description{min-width:0}.engine-label{display:flex;align-items:center;gap:12px;font-family:"SFMono-Regular",Consolas,monospace;font-size:14px;color:#3e4934}
+.engine-state{font-size:12px;color:#59644e;border:1px solid #b7c0aa;padding:2px 6px}
+.engine-description p{font-size:13px;line-height:1.6;color:#59644e;margin:6px 0 0;overflow-wrap:anywhere}
+.engine-start{display:flex;align-items:center;justify-content:center;gap:9px;flex-shrink:0;min-height:42px;padding:9px 14px;border:1px solid #82916e;background:#e3e8d8;color:#3e4934;box-shadow:2px 2px 0 #b7c0aa;font-size:14px}
+.engine-start:hover:not(:disabled){background:#d2e5b8}.engine-start:disabled{opacity:.65}
+@media(max-width:700px){.engine-control{padding:14px;flex-wrap:wrap;gap:12px}.engine-start{margin-left:auto}}

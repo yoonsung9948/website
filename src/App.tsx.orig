@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react'
 import { config, examples, generate, models, type Metrics, type ModelId } from './lib/client'
 import Blog from './Blog'
 import TerminalInput from './TerminalInput'
-import EngineControl from './EngineControl'
 import { findPost, routeFromHash } from './lib/blog'
 
 type Entry = { id: number; prompt: string; model: string; output: string; error: string; status: 'waiting' | 'generating' | 'complete' | 'stopped' | 'error' }
@@ -98,7 +97,6 @@ export default function App() {
         <section className="instrument-panel" aria-label="Generation controls and benchmarks">
           <div className="instrument-heading"><h3>Generation / benchmarks</h3><button className="copy-button" type="button" onClick={() => void copy()} disabled={!output || busy}>{copyStatus}</button></div>
             <div className="examples flex flex-wrap gap-2"><span>Try</span>{examples.map(example => <button key={example.label} type="button" disabled={busy} onClick={() => setPrompt(example.prompt)}>{example.label} <span aria-hidden="true">↗</span></button>)}</div>
-            <EngineControl generating={busy}/>
             <div className="controls flex flex-wrap items-center justify-between gap-4"><div className="flex flex-wrap items-center gap-5"><label>Model <select value={model} onChange={event => setModel(event.target.value as ModelId)} disabled={busy}>{models.map(option => <option key={option.id} value={option.id}>{option.label}</option>)}</select></label><label>Max tokens <select value={maxTokens} onChange={event => setMaxTokens(Number(event.target.value))} disabled={busy || mock}><option>128</option><option>256</option><option>512</option><option>1024</option></select></label><label>Temperature <select value={temperature} onChange={event => setTemperature(Number(event.target.value))} disabled={busy || mock}><option>0</option><option>0.3</option><option>0.7</option><option>1</option></select></label></div>{busy ? <button type="button" className="generate" onClick={() => controller.current?.abort()}>Stop <span aria-hidden="true">■</span></button> : <button type="submit" form="generation-form" className="generate" disabled={!prompt.trim()}>Generate <span aria-hidden="true">↵</span></button>}</div>
         <div className="metrics" aria-label="Inference metrics"><Metric label="Time to first token" value={metrics.ttftMs} unit="ms" title="Engine-reported time to first token"/><Metric label="Decode throughput" value={metrics.decodeTokensPerSecond} unit="tok/s" title="Engine-reported decode throughput"/><Metric label="Output tokens" value={metrics.outputTokens} unit="tokens" title="Actual tokenizer count reported by the engine"/><Metric label="Total latency" value={metrics.totalLatencyMs === undefined ? undefined : metrics.totalLatencyMs / 1000} unit="s" title="Engine-reported total latency"/></div>
         </section>

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { config, examples, generate, models, type Metrics, type ModelId } from './lib/client'
 import Blog from './Blog'
 import TerminalInput from './TerminalInput'
-import EngineControl from './EngineControl'
+import EngineControl, { type EngineDisplayStatus } from './EngineControl'
 import { findPost, routeFromHash } from './lib/blog'
 
 type Entry = { id: number; prompt: string; model: string; output: string; error: string; status: 'waiting' | 'generating' | 'complete' | 'stopped' | 'error' }
@@ -27,6 +27,7 @@ export default function App() {
     return () => window.removeEventListener('hashchange', navigate)
   }, [])
   useEffect(() => { document.title = page === 'about' ? 'Yoon — About me' : page === 'blog' ? `Yoon — ${slug ? findPost(slug)?.title ?? 'Not found' : 'Blog'}` : 'Yoon — Inference Playground' }, [page, slug])
+  const [engineStatus, setEngineStatus] = useState<EngineDisplayStatus>({ label: mock ? 'sample' : 'unknown', message: mock ? 'Sample mode. No engine connected.' : 'Start the engine to begin.', loading: false })
   const [prompt, setPrompt] = useState('')
   const [history, setHistory] = useState<Entry[]>([])
   const [metrics, setMetrics] = useState<Metrics>({})
@@ -43,7 +44,7 @@ export default function App() {
   const followOutput = useRef(true)
   const busy = status === 'Waiting' || status === 'Generating'
   useEffect(() => () => controller.current?.abort(), [])
-  useEffect(() => { if (followOutput.current && termRef.current) termRef.current.scrollTop = termRef.current.scrollHeight }, [history, prompt])
+  useEffect(() => { if (followOutput.current && termRef.current) termRef.current.scrollTop = termRef.current.scrollHeight }, [history, prompt, engineStatus])
   useEffect(() => { if (page === 'playground' && canHover()) document.getElementById('prompt')?.focus({ preventScroll: true }) }, [page])
   async function run() {
     if (controller.current || !prompt.trim()) return
@@ -91,6 +92,11 @@ export default function App() {
             {entry.error && <p className="error-message" role="alert">{entry.error}</p>}
             {(entry.status === 'stopped' || entry.status === 'error') && <p className="shell-status" aria-hidden="true">[{entry.status}]</p>}
           </div>)}
+          <div className="terminal-engine-status" role="status" aria-live="polite" aria-atomic="true">
+            <span className="terminal-engine-prefix">engine:~$</span>
+            {engineStatus.loading && <span className="terminal-spinner" aria-hidden="true"><span className="terminal-spinner-frames"><span>|</span><span>/</span><span>—</span><span>\</span><span>|</span></span></span>}
+            <span><span className="terminal-engine-state">[{engineStatus.label}]</span> {engineStatus.message}</span>
+          </div>
           {!busy && <form id="generation-form" className="term-entry" onSubmit={event => { event.preventDefault(); void run() }}>
             <div className="shell-command term-line"><span className="term-prefix" aria-hidden="true">yoon@inference:~$ </span><TerminalInput value={prompt} onChange={setPrompt} onSubmit={() => void run()} placeholder="Ask the model something…" autoFocus={history.length > 0 && canHover()}/></div>
           </form>}
@@ -98,7 +104,7 @@ export default function App() {
         <section className="instrument-panel" aria-label="Generation controls and benchmarks">
           <div className="instrument-heading"><h3>Generation / benchmarks</h3><button className="copy-button" type="button" onClick={() => void copy()} disabled={!output || busy}>{copyStatus}</button></div>
             <div className="examples flex flex-wrap gap-2"><span>Try</span>{examples.map(example => <button key={example.label} type="button" disabled={busy} onClick={() => setPrompt(example.prompt)}>{example.label} <span aria-hidden="true">↗</span></button>)}</div>
-            <EngineControl generating={busy}/>
+            <EngineControl generating={busy} onStatusChange={setEngineStatus}/>
             <div className="controls flex flex-wrap items-center justify-between gap-4"><div className="flex flex-wrap items-center gap-5"><label>Model <select value={model} onChange={event => setModel(event.target.value as ModelId)} disabled={busy}>{models.map(option => <option key={option.id} value={option.id}>{option.label}</option>)}</select></label><label>Max tokens <select value={maxTokens} onChange={event => setMaxTokens(Number(event.target.value))} disabled={busy || mock}><option>128</option><option>256</option><option>512</option><option>1024</option></select></label><label>Temperature <select value={temperature} onChange={event => setTemperature(Number(event.target.value))} disabled={busy || mock}><option>0</option><option>0.3</option><option>0.7</option><option>1</option></select></label></div>{busy ? <button type="button" className="generate" onClick={() => controller.current?.abort()}>Stop <span aria-hidden="true">■</span></button> : <button type="submit" form="generation-form" className="generate" disabled={!prompt.trim()}>Generate <span aria-hidden="true">↵</span></button>}</div>
         <div className="metrics" aria-label="Inference metrics"><Metric label="Time to first token" value={metrics.ttftMs} unit="ms" title="Engine-reported time to first token"/><Metric label="Decode throughput" value={metrics.decodeTokensPerSecond} unit="tok/s" title="Engine-reported decode throughput"/><Metric label="Output tokens" value={metrics.outputTokens} unit="tokens" title="Actual tokenizer count reported by the engine"/><Metric label="Total latency" value={metrics.totalLatencyMs === undefined ? undefined : metrics.totalLatencyMs / 1000} unit="s" title="Engine-reported total latency"/></div>
         </section>

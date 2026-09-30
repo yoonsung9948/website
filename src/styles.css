@@ -140,3 +140,14 @@
 .engine-start{display:flex;align-items:center;justify-content:center;gap:9px;flex-shrink:0;min-height:42px;padding:9px 14px;border:1px solid #82916e;background:#e3e8d8;color:#3e4934;box-shadow:2px 2px 0 #b7c0aa;font-size:14px}
 .engine-start:hover:not(:disabled){background:#d2e5b8}.engine-start:disabled{opacity:.65}
 @media(max-width:700px){.engine-control{padding:14px;flex-wrap:wrap;gap:12px}.engine-start{margin-left:auto}}
+
+/* A compact engine status line with a four-frame terminal spinner. */
+.terminal-engine-status{display:flex;align-items:baseline;gap:10px;margin:16px 0;color:#b9c6ae;font-size:13px;line-height:1.8;overflow-wrap:anywhere}
+.terminal-engine-prefix{color:#91a282;white-space:nowrap}.terminal-engine-state{color:var(--accent)}
+.terminal-engine-status>span:last-child{min-width:0}
+.terminal-spinner{display:inline-block;flex-shrink:0;width:1ch;height:1em;overflow:hidden;align-self:baseline;position:relative;top:.12em;color:var(--accent);line-height:1em}
+.terminal-spinner-frames{display:block;animation:engine-spin .8s steps(4,end) infinite}
+.terminal-spinner-frames>span{display:block;height:1em;line-height:1em;text-align:center}
+@keyframes engine-spin{to{transform:translateY(-4em)}}
+@media(prefers-reduced-motion:reduce){.terminal-spinner-frames{animation:none}}
+@media(max-width:700px){.terminal-engine-status{font-size:12px;gap:7px}}

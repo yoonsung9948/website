@@ -8,7 +8,9 @@ const labels: Record<EngineState, string> = {
   error: 'Engine error', shutting_down: 'Shutting down',
 }
 
-export default function EngineControl({ generating }: { generating: boolean }) {
+export type EngineDisplayStatus = { label: string; message: string; loading: boolean }
+
+export default function EngineControl({ generating, onStatusChange }: { generating: boolean; onStatusChange: (status: EngineDisplayStatus) => void }) {
   const sample = config.mode !== 'live'
   const [state, setState] = useState<EngineState | 'unknown'>('unknown')
   const [pending, setPending] = useState(false)
@@ -16,6 +18,13 @@ export default function EngineControl({ generating }: { generating: boolean }) {
   const [needsCheck, setNeedsCheck] = useState(false)
   const active = useRef<AbortController | null>(null)
   useEffect(() => () => active.current?.abort(), [])
+  useEffect(() => {
+    onStatusChange({
+      label: sample ? 'sample' : state === 'unknown' ? (pending ? 'checking' : 'unknown') : state,
+      message: sample ? 'Sample mode. No engine connected.' : message || 'Start the engine to begin.',
+      loading: !sample && pending,
+    })
+  }, [sample, state, pending, message, onStatusChange])
 
   async function start() {
     if (sample || active.current) return
@@ -63,7 +72,7 @@ export default function EngineControl({ generating }: { generating: boolean }) {
   }
 
   return <div className="engine-control">
-    <div className="engine-description"><span className="engine-label">Engine <span className="engine-state">{sample ? 'Sample mode' : state === 'unknown' ? 'Status unknown' : labels[state]}</span></span><p id="engine-status" role="status">{sample ? 'Connect the live API to start the engine.' : message || 'Start the engine before sending your first prompt.'}</p></div>
+    <div className="engine-description"><span className="engine-label">Engine <span className="engine-state">{sample ? 'Sample mode' : state === 'unknown' ? 'Status unknown' : labels[state]}</span></span><p id="engine-status">{sample ? 'Connect the live API to start the engine.' : message || 'Start the engine before sending your first prompt.'}</p></div>
     <button type="button" className="engine-start" disabled={sample || pending || generating} aria-describedby="engine-status" onClick={() => void start()}><span aria-hidden="true">⏻</span> {pending ? 'Starting…' : needsCheck || state === 'ready' ? 'Check status' : 'Start engine'}</button>
   </div>
 }

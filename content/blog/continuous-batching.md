@@ -1,6 +1,6 @@
 ---
 title: "Continuous Batching: Slower Steps, Faster Requests"
-date: 2026-11-05
+date: 2026-10-18
 summary: How sharing decode turns took my custom engine from 21.98 to 65.65 tokens/s at concurrency four—and what latency, traces, and memory revealed.
 tags: [inference, benchmarks, continuous-batching, kv-cache, tracing]
 draft: false

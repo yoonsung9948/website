@@ -1,6 +1,6 @@
 ---
 title: What a Naive KV Cache Actually Saves
-date: 2026-11-05
+date: 2026-10-07
 summary: Investigating what my first KV cache saves, what it still recomputes, and where the latency goes.
 tags: [inference, benchmarks, kv-cache, tracing, go, python]
 draft: false

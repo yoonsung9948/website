@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "metadata": {
+    "declared": {
+      "experiment": "kv-comparison-no-kv",
+      "target_hardware": "unreported"
+    },
+    "effective_generation": [
+      {
+        "backend": "custom",
+        "device": "cuda",
+        "device_name": "NVIDIA A40",
+        "dtype": "torch.float16",
+        "engine_revision": "unreported",
+        "max_tokens": 64,
+        "model": "Qwen/Qwen3-8B",
+        "model_revision": "unreported",
+        "sampling": "greedy",
+        "torch_version": "2.14.0+cu130",
+        "transformers_version": "5.17.0",
+        "use_kv_cache": false
+      }
+    ],
+    "benchmark": {
+      "sweep_id": "sweep-1038f47f-4b17-457e-8cd7-7bd71d2e58b7",
+      "concurrency": 1,
+      "warmup_requests": 1,
+      "request_count": 20,
+      "input_tokens": [
+        24
+      ],
+      "output_tokens": [
+        64
+      ],
+      "tracing": "enabled"
+    }
+  },
+  "summary": {
+    "run_id": "26b68a3b-3be1-466c-baa0-16dc8e4aef0a",
+    "elapsed_seconds": 61.61625533411279,
+    "recorded_arrivals": 20,
+    "started": 20,
+    "successful": 20,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "success_rate": 1.0,
+    "successful_requests_per_second": 0.3245896702347528,
+    "latency": {
+      "samples": 20,
+      "mean_ms": 3078.7435667589307,
+      "p50_ms": 2975.525437388569,
+      "p95_ms": 3476.06712046545,
+      "p99_ms": 3523.7684567039832,
+      "max_ms": 3535.6937907636166
+    },
+    "scheduler_lag": {
+      "samples": 20,
+      "mean_ms": 0.030945660546422005,
+      "p50_ms": 0.01960480585694313,
+      "p95_ms": 0.07229158654809002,
+      "p99_ms": 0.11472450569272034,
+      "max_ms": 0.12533273547887802
+    },
+    "failure_reasons": {},
+    "scheduled_duration_seconds": null,
+    "status": "completed",
+    "first_text_latency": {
+      "samples": 20,
+      "mean_ms": 656.4256833400577,
+      "p50_ms": 517.7156459540129,
+      "p95_ms": 1049.2186631308869,
+      "p99_ms": 1088.2857652613893,
+      "max_ms": 1098.052540794015
+    },
+    "engine_ttft": {
+      "samples": 20,
+      "mean_ms": 85.77196355909109,
+      "p50_ms": 85.31305298674852,
+      "p95_ms": 96.84750905726105,
+      "p99_ms": 99.60512184072286,
+      "max_ms": 100.29452503658831
+    },
+    "engine_latency": {
+      "samples": 20,
+      "mean_ms": 2635.6212962884456,
+      "p50_ms": 2631.222662050277,
+      "p95_ms": 2664.5527714979835,
+      "p99_ms": 2724.066494407598,
+      "max_ms": 2738.9449251350015
+    },
+    "initial_queue": {
+      "samples": 20,
+      "mean_ms": 1.928058813791722,
+      "p50_ms": 1.2957804137840867,
+      "p95_ms": 4.627500404603783,
+      "p99_ms": 8.433573641814284,
+      "max_ms": 9.38509195111692
+    },
+    "inter_chunk_gap": {
+      "samples": 920,
+      "mean_ms": 52.63617373243703,
+      "p50_ms": 41.42981255427003,
+      "p95_ms": 89.23079126980156,
+      "p99_ms": 171.05211225803924,
+      "max_ms": 266.891083214432
+    },
+    "output_tokens": 1280,
+    "token_count_samples": 20,
+    "output_tokens_per_second": 20.77373889502418,
+    "decode_tokens_per_second": {
+      "samples": 20,
+      "mean": 24.713889539013266,
+      "p50": 24.761050401737663,
+      "p95": 24.915829380465713
+    },
+    "http_status_counts": {
+      "200": 20
+    },
+    "rejected": 0,
+    "rejection_rate": 0.0,
+    "failure_rate": 0.0,
+    "skipped_arrival_rate": 0.0,
+    "cancelled_arrival_rate": 0.0,
+    "offered_requests_per_second": null,
+    "load_mode": "closed_loop",
+    "requested_requests": 20,
+    "configured_concurrency": 1,
+    "max_observed_in_flight": 1,
+    "stop_reason": "request_count_reached"
+  }
+}

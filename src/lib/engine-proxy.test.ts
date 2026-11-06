@@ -1,11 +1,13 @@
 import { afterEach, expect, it, vi } from 'vitest'
 import { onRequestPost } from '../../functions/api/start_engine'
-import { NoGpuAvailableError, requestEngineStart } from './engine'
+import { CooldownError, EngineStateConflictError, NoGpuAvailableError, requestEngineStart } from './engine'
 
 afterEach(() => vi.unstubAllGlobals())
 const env = { ORIGIN_URL: 'https://control.test/', DEMO_KEY: 'test-only-key' }
 it.each([
   [202, { status: 'starting' }],
+  [409, { error: 'engine_state_conflict' }],
+  [429, { error: 'provision_cooldown' }],
   [503, { error: 'no_gpu_available' }],
 ])('preserves backend status %s and its JSON through the proxy', async (status, body) => {
   const upstream = vi.fn().mockResolvedValue(Response.json(body, { status, headers: { 'Retry-After': '60' } }))
@@ -19,6 +21,8 @@ it.each([
   // Feed the actual proxy response into the browser adapter.
   vi.stubGlobal('fetch', vi.fn().mockResolvedValue(response))
   const result = requestEngineStart(new AbortController().signal, { mode: 'live', baseUrl: '/api' })
-  if (status === 503) await expect(result).rejects.toBeInstanceOf(NoGpuAvailableError)
+  if (status === 409) await expect(result).rejects.toBeInstanceOf(EngineStateConflictError)
+  else if (status === 429) await expect(result).rejects.toBeInstanceOf(CooldownError)
+  else if (status === 503) await expect(result).rejects.toBeInstanceOf(NoGpuAvailableError)
   else await expect(result).resolves.toBeUndefined()
 })

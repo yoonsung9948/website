@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" role="img" aria-labelledby="title desc">
+<title id="title">What my cache changes at decode step 40</title><desc id="desc">Both modes have 64 tokens of context at step 40. Without caching, all 64 input tokens go through the model again. With caching, 63 tokens of per-layer keys and values are retained and one new input token goes through the model. Attention uses the complete history in both cases.</desc>
+<defs><marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="#62665d"/></marker></defs>
+<rect width="960" height="480" fill="#fffdf7" rx="12"/>
+<g font-family="system-ui,sans-serif" fill="#293025">
+<text x="30" y="40" font-size="25" font-weight="600">What I stop recomputing at step 40</text>
+<text x="30" y="70" font-size="15">Both requests have 64 tokens of context. The new input to the forward pass differs.</text>
+<text x="30" y="120" fill="#b45309" font-size="21" font-weight="600">No KV cache</text>
+<g stroke="#b45309" fill="#fff2e2"><rect x="30" y="142" width="260" height="70" rx="7"/><rect x="350" y="142" width="320" height="70" rx="7"/><rect x="730" y="142" width="200" height="70" rx="7"/></g>
+<g text-anchor="middle" font-size="16"><text x="160" y="170">All 64 input tokens</text><text x="160" y="195">24 prompt + 40 generated</text><text x="510" y="170">Run the full prefix again</text><text x="510" y="195">Projections, attention, MLP, head</text><text x="830" y="183">Sample next token</text></g>
+<text x="30" y="264" fill="#0369a1" font-size="21" font-weight="600">KV cache</text>
+<g stroke="#0369a1" fill="#e9f5fc"><rect x="30" y="286" width="260" height="70" rx="7"/><rect x="350" y="286" width="320" height="70" rx="7"/><rect x="730" y="286" width="200" height="70" rx="7"/><rect x="350" y="386" width="320" height="48" rx="7"/></g>
+<g text-anchor="middle" font-size="16"><text x="160" y="315">One new input token</text><text x="160" y="340">Only the uncached suffix</text><text x="510" y="315">Run the model for that token</text><text x="510" y="340">Attention still sees all 64 tokens</text><text x="830" y="327">Sample next token</text><text x="510" y="415">Stored per-layer K/V for 63 tokens</text></g>
+<g fill="none" stroke="#62665d" stroke-width="2" marker-end="url(#a)"><path d="M290 177H347"/><path d="M670 177H727"/><path d="M290 321H347"/><path d="M670 321H727"/><path d="M510 386V359"/></g>
+<text x="30" y="464" font-size="14">My initial cache appends K/V with torch.cat; it still allocates and copies as history grows.</text>
+</g></svg>

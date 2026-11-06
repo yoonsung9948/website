@@ -1,0 +1,880 @@
+{
+  "schema_version": 1,
+  "session_id": "batching-20261105-222107",
+  "primary": [
+    {
+      "run_id": "28ef31f9-b7c5-4a55-8ceb-5b415a9255d5",
+      "concurrency": 1,
+      "batching": false,
+      "successful": 20,
+      "output_tokens": 1280,
+      "elapsed_seconds": 67.60593629209325,
+      "tokens_per_second": 18.93324861991003,
+      "completion_seconds": 3.32380906236358,
+      "engine_ttft_ms": 92.62534650042653,
+      "first_text_ms": 604.580958141014,
+      "batch_mean": 1.0,
+      "batch_max": 1,
+      "memory": {
+        "baseline_allocated_bytes": 17600066560,
+        "baseline_reserved_bytes": 17767071744,
+        "peak_allocated_bytes": 17607556608,
+        "peak_reserved_bytes": 17767071744,
+        "peak_increase_over_first_idle_bytes": 7490048,
+        "final_allocated_bytes": 17600066560,
+        "final_reserved_bytes": 17767071744,
+        "allocated_change_after_drain_bytes": 0,
+        "max_engine_in_flight": 1
+      },
+      "generation": {
+        "model": "Qwen/Qwen3-8B",
+        "backend": "custom",
+        "device_name": "NVIDIA A40",
+        "dtype": "torch.float16",
+        "torch_version": "2.14.0+cu130",
+        "transformers_version": "5.17.0",
+        "engine_revision": "unreported",
+        "model_revision": "unreported"
+      }
+    },
+    {
+      "run_id": "f98cea17-8214-4dd1-8183-661b30fc32be",
+      "concurrency": 1,
+      "batching": true,
+      "successful": 20,
+      "output_tokens": 1280,
+      "elapsed_seconds": 66.16872954089195,
+      "tokens_per_second": 19.344485059350678,
+      "completion_seconds": 3.2232556040398777,
+      "engine_ttft_ms": 92.29287353809923,
+      "first_text_ms": 568.6682709492743,
+      "batch_mean": 1.0,
+      "batch_max": 1,
+      "memory": {
+        "baseline_allocated_bytes": 17600066560,
+        "baseline_reserved_bytes": 17767071744,
+        "peak_allocated_bytes": 17607556608,
+        "peak_reserved_bytes": 17767071744,
+        "peak_increase_over_first_idle_bytes": 7490048,
+        "final_allocated_bytes": 17600066560,
+        "final_reserved_bytes": 17767071744,
+        "allocated_change_after_drain_bytes": 0,
+        "max_engine_in_flight": 1
+      },
+      "generation": {
+        "model": "Qwen/Qwen3-8B",
+        "backend": "custom",
+        "device_name": "NVIDIA A40",
+        "dtype": "torch.float16",
+        "torch_version": "2.14.0+cu130",
+        "transformers_version": "5.17.0",
+        "engine_revision": "unreported",
+        "model_revision": "unreported"
+      }
+    },
+    {
+      "run_id": "1ad7f7e2-f808-4758-b78b-8312e90dcee2",
+      "concurrency": 2,
+      "batching": false,
+      "successful": 20,
+      "output_tokens": 1280,
+      "elapsed_seconds": 62.484715583734214,
+      "tokens_per_second": 20.485009622628493,
+      "completion_seconds": 6.397352521074936,
+      "engine_ttft_ms": 95.35117307677865,
+      "first_text_ms": 1056.3968955539167,
+      "batch_mean": 1.0,
+      "batch_max": 1,
+      "memory": {
+        "baseline_allocated_bytes": 17600066560,
+        "baseline_reserved_bytes": 17767071744,
+        "peak_allocated_bytes": 17607556608,
+        "peak_reserved_bytes": 17767071744,
+        "peak_increase_over_first_idle_bytes": 7490048,
+        "final_allocated_bytes": 17600066560,
+        "final_reserved_bytes": 17767071744,
+        "allocated_change_after_drain_bytes": 0,
+        "max_engine_in_flight": 2
+      },
+      "generation": {
+        "model": "Qwen/Qwen3-8B",
+        "backend": "custom",
+        "device_name": "NVIDIA A40",
+        "dtype": "torch.float16",
+        "torch_version": "2.14.0+cu130",
+        "transformers_version": "5.17.0",
+        "engine_revision": "unreported",
+        "model_revision": "unreported"
+      }
+    },
+    {
+      "run_id": "cae3788a-e317-4873-afb0-4f6f96abf077",
+      "concurrency": 2,
+      "batching": true,
+      "successful": 20,
+      "output_tokens": 1280,
+      "elapsed_seconds": 33.751500375103205,
+      "tokens_per_second": 37.9242399826525,
+      "completion_seconds": 3.3216606876812875,
+      "engine_ttft_ms": 94.0809603780508,
+      "first_text_ms": 625.8460828103125,
+      "batch_mean": 1.9777777777777785,
+      "batch_max": 2,
+      "memory": {
+        "baseline_allocated_bytes": 17600066560,
+        "baseline_reserved_bytes": 17767071744,
+        "peak_allocated_bytes": 17607556608,
+        "peak_reserved_bytes": 17767071744,
+        "peak_increase_over_first_idle_bytes": 7490048,
+        "final_allocated_bytes": 17600066560,
+        "final_reserved_bytes": 17767071744,
+        "allocated_change_after_drain_bytes": 0,
+        "max_engine_in_flight": 2
+      },
+      "generation": {
+        "model": "Qwen/Qwen3-8B",
+        "backend": "custom",
+        "device_name": "NVIDIA A40",
+        "dtype": "torch.float16",
+        "torch_version": "2.14.0+cu130",
+        "transformers_version": "5.17.0",
+        "engine_revision": "unreported",
+        "model_revision": "unreported"
+      }
+    },
+    {
+      "run_id": "59e98d87-91b3-486c-8be8-0d0e676c856a",
+      "concurrency": 4,
+      "batching": false,
+      "successful": 20,
+      "output_tokens": 1280,
+      "elapsed_seconds": 58.24655000027269,
+      "tokens_per_second": 21.975550483144623,
+      "completion_seconds": 11.73749452107586,
+      "engine_ttft_ms": 109.02098403312266,
+      "first_text_ms": 949.7945834882557,
+      "batch_mean": 1.0,
+      "batch_max": 1,
+      "memory": {
+        "baseline_allocated_bytes": 17600066560,
+        "baseline_reserved_bytes": 17767071744,
+        "peak_allocated_bytes": 17607556608,
+        "peak_reserved_bytes": 17767071744,
+        "peak_increase_over_first_idle_bytes": 7490048,
+        "final_allocated_bytes": 17600066560,
+        "final_reserved_bytes": 17767071744,
+        "allocated_change_after_drain_bytes": 0,
+        "max_engine_in_flight": 4
+      },
+      "generation": {
+        "model": "Qwen/Qwen3-8B",
+        "backend": "custom",
+        "device_name": "NVIDIA A40",
+        "dtype": "torch.float16",
+        "torch_version": "2.14.0+cu130",
+        "transformers_version": "5.17.0",
+        "engine_revision": "unreported",
+        "model_revision": "unreported"
+      }
+    },
+    {
+      "run_id": "bcc694a2-0df7-43ef-b201-4581d757de28",
+      "concurrency": 4,
+      "batching": true,
+      "successful": 20,
+      "output_tokens": 1280,
+      "elapsed_seconds": 19.49759416701272,
+      "tokens_per_second": 65.6491251708165,
+      "completion_seconds": 3.9992179586552083,
+      "engine_ttft_ms": 94.19770259410143,
+      "first_text_ms": 782.459125155583,
+      "batch_mean": 3.887301587301587,
+      "batch_max": 4,
+      "memory": {
+        "baseline_allocated_bytes": 17600066560,
+        "baseline_reserved_bytes": 17767071744,
+        "peak_allocated_bytes": 17607556608,
+        "peak_reserved_bytes": 17767071744,
+        "peak_increase_over_first_idle_bytes": 7490048,
+        "final_allocated_bytes": 17600066560,
+        "final_reserved_bytes": 17767071744,
+        "allocated_change_after_drain_bytes": 0,
+        "max_engine_in_flight": 4
+      },
+      "generation": {
+        "model": "Qwen/Qwen3-8B",
+        "backend": "custom",
+        "device_name": "NVIDIA A40",
+        "dtype": "torch.float16",
+        "torch_version": "2.14.0+cu130",
+        "transformers_version": "5.17.0",
+        "engine_revision": "unreported",
+        "model_revision": "unreported"
+      }
+    }
+  ],
+  "diagnostic": [
+    {
+      "batching": false,
+      "run_id": "1bd8e00d-5fd4-410c-8a16-429b9ab9c1a1",
+      "requests": 8,
+      "decode_participations": 504,
+      "median_runner_ms": 44.655787000000004,
+      "median_wait_ms": 135.67549095023423
+    },
+    {
+      "batching": true,
+      "run_id": "167b09ef-ecbb-46d9-bdf0-3d2b12ff6fc7",
+      "requests": 8,
+      "decode_participations": 504,
+      "median_runner_ms": 53.622062,
+      "median_wait_ms": 0.47884206287562847
+    }
+  ],
+  "trace_windows": [
+    {
+      "batching": false,
+      "run_id": "1bd8e00d-5fd4-410c-8a16-429b9ab9c1a1",
+      "duration_ms": 700,
+      "reference_request": "0",
+      "reference_step": 20,
+      "spans": [
+        {
+          "request": "2",
+          "step": 26,
+          "start_ms": 43.522458,
+          "duration_ms": 42.82898,
+          "batch_size": 1,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 130.35535998642445
+        },
+        {
+          "request": "2",
+          "step": 27,
+          "start_ms": 218.894031,
+          "duration_ms": 42.677988,
+          "batch_size": 1,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 132.40020512603223
+        },
+        {
+          "request": "2",
+          "step": 28,
+          "start_ms": 391.398604,
+          "duration_ms": 42.728859,
+          "batch_size": 1,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 129.69656195491552
+        },
+        {
+          "request": "2",
+          "step": 29,
+          "start_ms": 564.972989,
+          "duration_ms": 42.95509300000003,
+          "batch_size": 1,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 130.7044110726565
+        },
+        {
+          "request": "1",
+          "step": 21,
+          "start_ms": 86.753179,
+          "duration_ms": 44.92690499999999,
+          "batch_size": 1,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 130.25775202549994
+        },
+        {
+          "request": "1",
+          "step": 22,
+          "start_ms": 261.979012,
+          "duration_ms": 42.791192999999964,
+          "batch_size": 1,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 130.1362991798669
+        },
+        {
+          "request": "1",
+          "step": 23,
+          "start_ms": 434.471148,
+          "duration_ms": 43.32613999999995,
+          "batch_size": 1,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 129.57287719473243
+        },
+        {
+          "request": "1",
+          "step": 24,
+          "start_ms": 608.345563,
+          "duration_ms": 42.20581600000003,
+          "batch_size": 1,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 130.33140311017632
+        },
+        {
+          "request": "3",
+          "step": 22,
+          "start_ms": 132.180643,
+          "duration_ms": 42.853407000000004,
+          "batch_size": 1,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 132.40849995054305
+        },
+        {
+          "request": "3",
+          "step": 23,
+          "start_ms": 305.120098,
+          "duration_ms": 42.75269800000001,
+          "batch_size": 1,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 129.93657705374062
+        },
+        {
+          "request": "3",
+          "step": 24,
+          "start_ms": 478.366479,
+          "duration_ms": 42.648499000000015,
+          "batch_size": 1,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 130.31280203722417
+        },
+        {
+          "request": "3",
+          "step": 25,
+          "start_ms": 650.890018,
+          "duration_ms": 42.825084999999945,
+          "batch_size": 1,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 129.7061420045793
+        },
+        {
+          "request": "0",
+          "step": 20,
+          "start_ms": 0.0,
+          "duration_ms": 43.144984,
+          "batch_size": 1,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 130.4179399739951
+        },
+        {
+          "request": "0",
+          "step": 21,
+          "start_ms": 175.489025,
+          "duration_ms": 43.009523,
+          "batch_size": 1,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 132.1873429697007
+        },
+        {
+          "request": "0",
+          "step": 22,
+          "start_ms": 348.207103,
+          "duration_ms": 42.86693199999996,
+          "batch_size": 1,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 129.57222806289792
+        },
+        {
+          "request": "0",
+          "step": 23,
+          "start_ms": 521.548553,
+          "duration_ms": 42.96882000000005,
+          "batch_size": 1,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 130.32648316584527
+        },
+        {
+          "request": "0",
+          "step": 24,
+          "start_ms": 694.041849,
+          "duration_ms": 42.13117700000009,
+          "batch_size": 1,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 129.38331300392747
+        }
+      ]
+    },
+    {
+      "batching": true,
+      "run_id": "167b09ef-ecbb-46d9-bdf0-3d2b12ff6fc7",
+      "duration_ms": 700,
+      "reference_request": "0",
+      "reference_step": 20,
+      "spans": [
+        {
+          "request": "3",
+          "step": 19,
+          "start_ms": 0.037593,
+          "duration_ms": 53.351932,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.5359130445867777
+        },
+        {
+          "request": "3",
+          "step": 20,
+          "start_ms": 54.205947,
+          "duration_ms": 53.174473,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.48335082828998566
+        },
+        {
+          "request": "3",
+          "step": 21,
+          "start_ms": 108.18601,
+          "duration_ms": 53.343946,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.47878106124699116
+        },
+        {
+          "request": "3",
+          "step": 22,
+          "start_ms": 162.303876,
+          "duration_ms": 53.13271,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.46953512355685234
+        },
+        {
+          "request": "3",
+          "step": 23,
+          "start_ms": 216.197448,
+          "duration_ms": 53.117771000000005,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.4483622033149004
+        },
+        {
+          "request": "3",
+          "step": 24,
+          "start_ms": 270.118114,
+          "duration_ms": 52.97373600000003,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.4744380712509155
+        },
+        {
+          "request": "3",
+          "step": 25,
+          "start_ms": 323.910129,
+          "duration_ms": 53.627071,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.5004738923162222
+        },
+        {
+          "request": "3",
+          "step": 26,
+          "start_ms": 378.549891,
+          "duration_ms": 53.296437000000026,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.6278939545154572
+        },
+        {
+          "request": "3",
+          "step": 27,
+          "start_ms": 432.773554,
+          "duration_ms": 53.41584900000004,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.5813981406390667
+        },
+        {
+          "request": "3",
+          "step": 28,
+          "start_ms": 487.026156,
+          "duration_ms": 53.080416000000014,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.5208239890635014
+        },
+        {
+          "request": "3",
+          "step": 29,
+          "start_ms": 540.894947,
+          "duration_ms": 53.05472199999997,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.4778169095516205
+        },
+        {
+          "request": "3",
+          "step": 30,
+          "start_ms": 594.71937,
+          "duration_ms": 54.542103,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.46754791401326656
+        },
+        {
+          "request": "3",
+          "step": 31,
+          "start_ms": 650.522267,
+          "duration_ms": 53.661944999999946,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.7284840103238821
+        },
+        {
+          "request": "0",
+          "step": 20,
+          "start_ms": 0.0,
+          "duration_ms": 53.411655,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.5403431132435799
+        },
+        {
+          "request": "0",
+          "step": 21,
+          "start_ms": 54.170035,
+          "duration_ms": 53.233886999999996,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.48727402463555336
+        },
+        {
+          "request": "0",
+          "step": 22,
+          "start_ms": 108.149775,
+          "duration_ms": 53.40133900000001,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.48305909149348736
+        },
+        {
+          "request": "0",
+          "step": 23,
+          "start_ms": 162.268877,
+          "duration_ms": 53.188366,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.4735700786113739
+        },
+        {
+          "request": "0",
+          "step": 24,
+          "start_ms": 216.160872,
+          "duration_ms": 53.176927000000006,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.4519759677350521
+        },
+        {
+          "request": "0",
+          "step": 25,
+          "start_ms": 270.08062,
+          "duration_ms": 53.032779000000005,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.47872914001345634
+        },
+        {
+          "request": "0",
+          "step": 26,
+          "start_ms": 323.874454,
+          "duration_ms": 53.69577099999998,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.5045968573540449
+        },
+        {
+          "request": "0",
+          "step": 27,
+          "start_ms": 378.514093,
+          "duration_ms": 53.35834799999998,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.63372403383255
+        },
+        {
+          "request": "0",
+          "step": 28,
+          "start_ms": 432.737394,
+          "duration_ms": 53.473521000000005,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.586298992857337
+        },
+        {
+          "request": "0",
+          "step": 29,
+          "start_ms": 486.991476,
+          "duration_ms": 53.134629000000075,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.5250968970358372
+        },
+        {
+          "request": "0",
+          "step": 30,
+          "start_ms": 540.85855,
+          "duration_ms": 53.11091499999998,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.482398085296154
+        },
+        {
+          "request": "0",
+          "step": 31,
+          "start_ms": 594.683959,
+          "duration_ms": 54.64895100000001,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.47181686386466026
+        },
+        {
+          "request": "0",
+          "step": 32,
+          "start_ms": 650.474564,
+          "duration_ms": 53.72836500000005,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.7370389066636562
+        },
+        {
+          "request": "2",
+          "step": 21,
+          "start_ms": -0.044795,
+          "duration_ms": 53.46463,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.5448160227388144
+        },
+        {
+          "request": "2",
+          "step": 22,
+          "start_ms": 54.128272,
+          "duration_ms": 53.284091,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.4915599711239338
+        },
+        {
+          "request": "2",
+          "step": 23,
+          "start_ms": 108.110042,
+          "duration_ms": 53.449319999999986,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.48709590919315815
+        },
+        {
+          "request": "2",
+          "step": 24,
+          "start_ms": 162.228769,
+          "duration_ms": 53.237060000000014,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.47715799883008003
+        },
+        {
+          "request": "2",
+          "step": 25,
+          "start_ms": 216.121022,
+          "duration_ms": 53.22673499999999,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.4558791406452656
+        },
+        {
+          "request": "2",
+          "step": 26,
+          "start_ms": 270.034407,
+          "duration_ms": 53.08769000000001,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.48273918218910694
+        },
+        {
+          "request": "2",
+          "step": 27,
+          "start_ms": 323.832688,
+          "duration_ms": 53.74943099999996,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.5086718592792749
+        },
+        {
+          "request": "2",
+          "step": 28,
+          "start_ms": 378.473132,
+          "duration_ms": 53.40876099999997,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.640928978100419
+        },
+        {
+          "request": "2",
+          "step": 29,
+          "start_ms": 432.697244,
+          "duration_ms": 53.52207699999997,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.5909518804401159
+        },
+        {
+          "request": "2",
+          "step": 30,
+          "start_ms": 486.952686,
+          "duration_ms": 53.18160899999992,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.5298960022628307
+        },
+        {
+          "request": "2",
+          "step": 31,
+          "start_ms": 540.818099,
+          "duration_ms": 53.16022900000007,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.48624188639223576
+        },
+        {
+          "request": "2",
+          "step": 32,
+          "start_ms": 594.644324,
+          "duration_ms": 54.70504200000005,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.48006908036768436
+        },
+        {
+          "request": "2",
+          "step": 33,
+          "start_ms": 650.431111,
+          "duration_ms": 53.783289999999965,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.743921147659421
+        },
+        {
+          "request": "1",
+          "step": 25,
+          "start_ms": -0.102141,
+          "duration_ms": 53.529773000000006,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.5509289912879467
+        },
+        {
+          "request": "1",
+          "step": 26,
+          "start_ms": 54.073251,
+          "duration_ms": 53.347413,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.4978629294782877
+        },
+        {
+          "request": "1",
+          "step": 27,
+          "start_ms": 108.058133,
+          "duration_ms": 53.509254999999996,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.4934691824018955
+        },
+        {
+          "request": "1",
+          "step": 28,
+          "start_ms": 162.177171,
+          "duration_ms": 53.29613400000002,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.4826218355447054
+        },
+        {
+          "request": "1",
+          "step": 29,
+          "start_ms": 216.068779,
+          "duration_ms": 53.28742299999999,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.46130106784403324
+        },
+        {
+          "request": "1",
+          "step": 30,
+          "start_ms": 269.981054,
+          "duration_ms": 53.14927400000005,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.4881687927991152
+        },
+        {
+          "request": "1",
+          "step": 31,
+          "start_ms": 323.779467,
+          "duration_ms": 53.81264699999997,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.5140888970345259
+        },
+        {
+          "request": "1",
+          "step": 32,
+          "start_ms": 378.41774,
+          "duration_ms": 53.47320400000001,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.6503749173134565
+        },
+        {
+          "request": "1",
+          "step": 33,
+          "start_ms": 432.643041,
+          "duration_ms": 53.584295,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.5975901149213314
+        },
+        {
+          "request": "1",
+          "step": 34,
+          "start_ms": 486.899864,
+          "duration_ms": 53.24291900000003,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.5357330664992332
+        },
+        {
+          "request": "1",
+          "step": 35,
+          "start_ms": 540.767055,
+          "duration_ms": 53.21902699999998,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.491719925776124
+        },
+        {
+          "request": "1",
+          "step": 36,
+          "start_ms": 594.594051,
+          "duration_ms": 54.77248099999997,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.48599904403090477
+        },
+        {
+          "request": "1",
+          "step": 37,
+          "start_ms": 650.374943,
+          "duration_ms": 53.846935999999914,
+          "batch_size": 4,
+          "input_tokens": 1,
+          "scheduler_wait_ms": 0.7569980807602406
+        }
+      ]
+    }
+  ],
+  "definitions": {
+    "throughput": "Successful output tokens / elapsed seconds including drain; warmup excluded.",
+    "batch_mean": "Mean per-request decode batch participation; not a physical-call average.",
+    "memory": "Process CUDA allocator, whole-window peak; includes model/pool; not total GPU memory."
+  }
+}

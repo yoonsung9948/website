@@ -1,7 +1,7 @@
 import { Marked } from 'marked'
 
 export type Post = { slug: string; title: string; date: string; summary: string; tags: string[]; draft: boolean; body: string; readingMinutes: number }
-export type Route = { page: 'playground' } | { page: 'about' } | { page: 'blog'; slug?: string }
+export type Route = { page: 'playground' } | { page: 'benchmarks' } | { page: 'about' } | { page: 'blog'; slug?: string }
 
 const SAFE_URL = /^(https?:|mailto:|#|\/|\.\/|\.\.\/)/i
 const escapeHtml = (text: string) => text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
@@ -57,6 +57,7 @@ export function formatDate(date: string): string {
 }
 
 export function routeFromHash(hash: string): Route {
+  if (hash === '#benchmarks') return { page: 'benchmarks' }
   if (hash.startsWith('#blog')) {
     const slug = hash.startsWith('#blog/') ? decodeURIComponent(hash.slice(6)).replace(/\/$/, '') : ''
     return { page: 'blog', slug: slug || undefined }

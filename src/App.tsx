@@ -1,11 +1,18 @@
+import { RequestRateLimitError } from './lib/api-errors'
 import { useEffect, useRef, useState } from 'react'
-import { config, examples, generate, models, type Metrics, type ModelId } from './lib/client'
+import { config, examples, generate, REQUEST_TIMEOUT_MS } from './lib/client'
 import Blog from './Blog'
+import Experiments from './Experiments'
+import MetricsView from './MetricsView'
+import type { RequestRecord } from './RequestDetails'
+import { useEngineInfo } from './lib/use-engine-info'
+import type { CacheMode } from './lib/engine-info'
+import Benchmarks from './Benchmarks'
 import TerminalInput from './TerminalInput'
 import EngineControl, { type EngineDisplayStatus } from './EngineControl'
 import { findPost, routeFromHash } from './lib/blog'
 
-type Entry = { id: number; prompt: string; model: string; output: string; error: string; status: 'waiting' | 'generating' | 'complete' | 'stopped' | 'error' }
+type Entry = RequestRecord & { id: number; prompt: string; model: string; output: string; error: string; status: 'waiting' | 'generating' | 'complete' | 'stopped' | 'error' }
 type Status = 'Ready' | 'Waiting' | 'Generating' | 'Complete' | 'Stopped' | 'Error'
 const mock = config.mode === 'mock'
 // TODO: replace with your profile URLs.
@@ -14,9 +21,6 @@ const LINKEDIN_URL = 'https://www.linkedin.com/in/yoonsunghwang'
 const EMAIL_URL = 'mailto:hello@yoonh.site'
 const REPO_URL = 'https://github.com/yoonsung9948/relay'
 const iconProps = { width: 22, height: 22, viewBox: '0 0 24 24', fill: 'currentColor', 'aria-hidden': true } as const
-function Metric({ label, value, unit, title }: { label: string; value?: number; unit: string; title: string }) {
-  return <div className="metric" title={title}><span>{label}</span><div><strong>{value === undefined ? '—' : value.toLocaleString(undefined, { maximumFractionDigits: 1 })}</strong><small>{unit}</small></div></div>
-}
 export default function App() {
   const [route, setRoute] = useState(() => routeFromHash(location.hash))
   const page = route.page
@@ -26,15 +30,42 @@ export default function App() {
     window.addEventListener('hashchange', navigate)
     return () => window.removeEventListener('hashchange', navigate)
   }, [])
-  useEffect(() => { document.title = page === 'about' ? 'Yoon — About me' : page === 'blog' ? `Yoon — ${slug ? findPost(slug)?.title ?? 'Not found' : 'Blog'}` : 'Yoon — Inference Playground' }, [page, slug])
+  useEffect(() => { document.title = page === 'about' ? 'Yoon — About me' : page === 'benchmarks' ? 'Yoon — Benchmarks' : page === 'blog' ? `Yoon — ${slug ? findPost(slug)?.title ?? 'Not found' : 'Blog'}` : 'Yoon — Inference Playground' }, [page, slug])
   const [engineStatus, setEngineStatus] = useState<EngineDisplayStatus>({ label: mock ? 'sample' : 'unknown', message: mock ? 'Sample mode. No engine connected.' : 'Start the engine to begin.', loading: false })
+  const { snapshot, error: infoError } = useEngineInfo(!mock && engineStatus.label === 'ready')
+  const info = snapshot && !snapshot.stale && engineStatus.label === 'ready' ? snapshot.info : null
+  const [experimentBusy, setExperimentBusy] = useState(false)
   const [prompt, setPrompt] = useState('')
   const [history, setHistory] = useState<Entry[]>([])
-  const [metrics, setMetrics] = useState<Metrics>({})
+  const metrics = history.at(-1)?.metrics ?? {}
+  const generation = history.at(-1)?.generation
+  const [generationRetryAt, setGenerationRetryAt] = useState<number | null>(null)
+  const [clock, setClock] = useState(Date.now)
+  const generationRetrySeconds = generationRetryAt === null ? 0 : Math.max(0, Math.ceil((generationRetryAt - clock) / 1000))
+  useEffect(() => {
+    if (generationRetryAt === null) return
+    const tick = () => {
+      const now = Date.now()
+      setClock(now)
+      if (now >= generationRetryAt) setGenerationRetryAt(null)
+    }
+    tick()
+    const timer = window.setInterval(tick, 1000)
+    return () => window.clearInterval(timer)
+  }, [generationRetryAt])
   const [status, setStatus] = useState<Status>('Ready')
-  const [model, setModel] = useState<ModelId>(models[0].id)
-  const [maxTokens, setMaxTokens] = useState(256)
-  const [temperature, setTemperature] = useState(0.7)
+  const model = info?.model ?? 'configured'
+  const [cacheMode, setCacheMode] = useState<CacheMode>('none')
+  const [decodeBatching, setDecodeBatching] = useState(false)
+  const [maxTokens, setMaxTokens] = useState(64)
+  const [temperature, setTemperature] = useState(0)
+  useEffect(() => {
+    if (!info) return
+    if (!info.cacheModes.includes(cacheMode)) setCacheMode('none')
+    if (cacheMode !== 'pool' || !info.decodeBatching) setDecodeBatching(false)
+    if (!info.temperatureSampling) setTemperature(0)
+    if (maxTokens > info.maxOutputTokens) setMaxTokens(info.maxOutputTokens)
+  }, [info, cacheMode, maxTokens])
   const [copyStatus, setCopyStatus] = useState('Copy output')
   const controller = useRef<AbortController | null>(null)
   const termRef = useRef<HTMLDivElement>(null)
@@ -42,27 +73,38 @@ export default function App() {
   const output = history.at(-1)?.output ?? ''
   const canHover = () => window.matchMedia('(hover: hover)').matches
   const followOutput = useRef(true)
-  const busy = status === 'Waiting' || status === 'Generating'
+  const busy = experimentBusy || status === 'Waiting' || status === 'Generating'
   useEffect(() => () => controller.current?.abort(), [])
   useEffect(() => { if (followOutput.current && termRef.current) termRef.current.scrollTop = termRef.current.scrollHeight }, [history, prompt, engineStatus])
   useEffect(() => { if (page === 'playground' && canHover()) document.getElementById('prompt')?.focus({ preventScroll: true }) }, [page])
   async function run() {
-    if (controller.current || !prompt.trim()) return
+    if (controller.current || generationRetrySeconds > 0 || !prompt.trim() || (!mock && !info)) return
+    const submittedPrompt = prompt
+    const requested = { prompt: prompt.trim(), model, maxTokens, temperature, kvCacheMode: cacheMode, decodeBatching }
+    const hardware = info ? structuredClone(info) : undefined
     const active = new AbortController()
     controller.current = active
     const id = ++entryId.current
     const patch = (change: (entry: Entry) => Entry) => setHistory(entries => entries.map(entry => entry.id === id ? change(entry) : entry))
-    setHistory(entries => [...entries, { id, prompt: prompt.trim(), model, output: '', error: '', status: 'waiting' as const }].slice(-30))
-    setPrompt(''); setMetrics({}); setCopyStatus('Copy output'); setStatus('Waiting'); followOutput.current = true
+    setHistory(entries => [...entries, { id, requested, hardware, prompt: prompt.trim(), model, output: '', error: '', status: 'waiting' as const }].slice(-30))
+    setPrompt(''); setCopyStatus('Copy output'); setStatus('Waiting'); followOutput.current = true
     termRef.current?.focus({ preventScroll: true })
-    const timeout = window.setTimeout(() => active.abort(new Error('The request timed out after 120 seconds.')), 120_000)
+    const timeout = window.setTimeout(() => active.abort(new Error('The request timed out after 190 seconds.')), REQUEST_TIMEOUT_MS)
     try {
-      for await (const event of generate({ prompt: prompt.trim(), model, maxTokens, temperature }, active.signal)) {
+      for await (const event of generate(requested, active.signal)) {
         if (event.type === 'delta') { patch(entry => ({ ...entry, output: entry.output + event.text, status: 'generating' })); setStatus('Generating') }
-        else setMetrics(previous => ({ ...previous, ...event.metrics }))
+        else if (event.type === 'metrics') patch(entry => ({ ...entry, metrics: event.metrics }))
+        else if (event.type === 'generation') patch(entry => ({ ...entry, generation: event.generation, model: event.generation.model ?? entry.model }))
+        else patch(entry => ({ ...entry, requestId: event.requestId, finishReason: event.finishReason }))
       }
       patch(entry => ({ ...entry, status: 'complete' })); setStatus('Complete')
     } catch (cause) {
+      if (cause instanceof Error && !active.signal.aborted) setPrompt(current => current || submittedPrompt)
+      if (cause instanceof RequestRateLimitError) {
+        setGenerationRetryAt(cause.retryAt)
+        setClock(Date.now())
+        setPrompt(current => current || submittedPrompt)
+      }
       if (active.signal.aborted && active.signal.reason?.name === 'AbortError') { patch(entry => ({ ...entry, status: 'stopped' })); setStatus('Stopped') }
       else { const message = cause instanceof Error ? cause.message : 'Unable to reach the API. Check the connection and CORS settings.'; patch(entry => ({ ...entry, status: 'error', error: message })); setStatus('Error') }
     } finally { clearTimeout(timeout); controller.current = null }
@@ -72,22 +114,22 @@ export default function App() {
     catch { setCopyStatus('Copy unavailable — select text') }
   }
   return <div className="min-h-screen flex flex-col">
-    <a className="skip-link" href={page === 'about' ? '#about-heading' : '#prompt'} onClick={page === 'blog' ? event => { event.preventDefault(); document.getElementById('blog-heading')?.focus() } : undefined}>Skip to content</a>
-    <header className="menu-bar"><div className="menu-inner"><a className="identity" href="#playground" aria-label="Yoon home"><img className="brand-logo" src={`${import.meta.env.BASE_URL}favicon.svg`} alt="" width="26" height="26"/>Yoon</a><nav aria-label="Main navigation"><a href="#playground" aria-current={page === 'playground' ? 'page' : undefined}>Playground</a><a href="#blog" aria-current={page === 'blog' ? 'page' : undefined}>Blog</a><a href="#about" aria-current={page === 'about' ? 'page' : undefined}>About me</a></nav><span className="menu-note">Personal computing, again.</span></div></header>
+    <a className="skip-link" href={page === 'about' ? '#about-heading' : page === 'benchmarks' ? '#benchmarks-heading' : '#prompt'} onClick={page === 'blog' ? event => { event.preventDefault(); document.getElementById('blog-heading')?.focus() } : undefined}>Skip to content</a>
+    <header className="menu-bar"><div className="menu-inner"><a className="identity" href="#playground" aria-label="Yoon home"><img className="brand-logo" src={`${import.meta.env.BASE_URL}favicon.svg`} alt="" width="26" height="26"/>Yoon</a><nav aria-label="Main navigation"><a href="#playground" aria-current={page === 'playground' ? 'page' : undefined}>Playground</a><a href="#benchmarks" aria-current={page === 'benchmarks' ? 'page' : undefined}>Benchmarks</a><a href="#blog" aria-current={page === 'blog' ? 'page' : undefined}>Blog</a><a href="#about" aria-current={page === 'about' ? 'page' : undefined}>About me</a></nav><span className="menu-note">Personal computing, again.</span></div></header>
     <main id="playground" className="page-shell flex-1" hidden={page !== 'playground'}>
       <div className="intro flex items-end justify-between gap-4"><div><p className="eyebrow">INDEPENDENT SYSTEMS / EXPERIMENT 001</p><h1>Inference playground<span className="period">.</span></h1><p className="intro-description">A custom engine. A Go control plane. A place to try it.</p></div><span className="edition">WORK IN PROGRESS<br/>REVISION 0.1</span></div>
       <section className="mac-window" aria-label="Inference playground">
         <div className="window-title"><span className="window-box" aria-hidden="true"/><div className="title-lines" aria-hidden="true"/><h2>inference — playground</h2><div className="title-lines" aria-hidden="true"/><span className="window-box small" aria-hidden="true"/></div>
         <div className="toolbar flex flex-wrap items-center justify-between gap-3"><div className="flex items-center gap-3"><span className="mode-badge"><span className="status-square"/>{mock ? 'Sample mode' : 'Live API'}</span><span className="toolbar-note">{mock ? 'Authored responses · no model connected' : 'Custom inference endpoint'}</span></div><span className="mono text-xs">SESSION / 001</span></div>
         <div ref={termRef} className="terminal" tabIndex={0} role="region" aria-label="Terminal" aria-busy={busy}
-          onClick={() => { if (!window.getSelection()?.toString()) document.getElementById('prompt')?.focus({ preventScroll: true }) }}
+          onClick={event => { if ((event.target as HTMLElement).closest('details,button,a,input,select,textarea')) return; if (!window.getSelection()?.toString()) document.getElementById('prompt')?.focus({ preventScroll: true }) }}
           onKeyDown={event => { if (busy && event.ctrlKey && event.key.toLowerCase() === 'c') { event.preventDefault(); controller.current?.abort() } }}
           onScroll={event => { const el = event.currentTarget; followOutput.current = el.scrollHeight - el.scrollTop - el.clientHeight < 40 }}>
           <div className="sr-only" role="status">{status === 'Ready' ? '' : status}</div>
           <div className="terminal-banner"><p>Inference shell / v0.1</p><p>{mock ? "Sample session. No model connected." : "Live API endpoint configured."}</p></div>
           {history.map(entry => <div className="term-entry" key={entry.id}>
             <p className="shell-command term-line"><span className="term-prefix">yoon@inference:~$ </span><span className="term-typed">{entry.prompt}</span></p>
-            {entry.status === 'waiting' && <p className="shell-status" aria-hidden="true">[waiting] awaiting first token<span className="cursor" aria-hidden="true"/></p>}
+            {entry.status === 'waiting' && <p className="shell-status" aria-hidden="true">[waiting] awaiting response<span className="cursor" aria-hidden="true"/></p>}
             {entry.output && <p className="shell-command term-line response-line"><span className="term-prefix out-prefix" aria-hidden="true">{entry.model}:~$ </span><span className="response-text">{entry.output}{entry.status === 'generating' && <span className="cursor" aria-hidden="true"/>}</span></p>}
             {entry.error && <p className="error-message" role="alert">{entry.error}</p>}
             {(entry.status === 'stopped' || entry.status === 'error') && <p className="shell-status" aria-hidden="true">[{entry.status}]</p>}
@@ -101,14 +143,23 @@ export default function App() {
             <div className="shell-command term-line"><span className="term-prefix" aria-hidden="true">yoon@inference:~$ </span><TerminalInput value={prompt} onChange={setPrompt} onSubmit={() => void run()} placeholder="Ask the model something…" autoFocus={history.length > 0 && canHover()}/></div>
           </form>}
         </div>
-        <section className="instrument-panel" aria-label="Generation controls and benchmarks">
-          <div className="instrument-heading"><h3>Generation / benchmarks</h3><button className="copy-button" type="button" onClick={() => void copy()} disabled={!output || busy}>{copyStatus}</button></div>
+        <section className="instrument-panel" aria-label="Generation controls and request metrics">
+          <div className="instrument-heading"><h3>Generation / request metrics</h3><button className="copy-button" type="button" onClick={() => void copy()} disabled={!output || busy}>{copyStatus}</button></div>
             <div className="examples flex flex-wrap gap-2"><span>Try</span>{examples.map(example => <button key={example.label} type="button" disabled={busy} onClick={() => setPrompt(example.prompt)}>{example.label} <span aria-hidden="true">↗</span></button>)}</div>
-            <EngineControl generating={busy} onStatusChange={setEngineStatus}/>
-            <div className="controls flex flex-wrap items-center justify-between gap-4"><div className="flex flex-wrap items-center gap-5"><label>Model <select value={model} onChange={event => setModel(event.target.value as ModelId)} disabled={busy}>{models.map(option => <option key={option.id} value={option.id}>{option.label}</option>)}</select></label><label>Max tokens <select value={maxTokens} onChange={event => setMaxTokens(Number(event.target.value))} disabled={busy || mock}><option>128</option><option>256</option><option>512</option><option>1024</option></select></label><label>Temperature <select value={temperature} onChange={event => setTemperature(Number(event.target.value))} disabled={busy || mock}><option>0</option><option>0.3</option><option>0.7</option><option>1</option></select></label></div>{busy ? <button type="button" className="generate" onClick={() => controller.current?.abort()}>Stop <span aria-hidden="true">■</span></button> : <button type="submit" form="generation-form" className="generate" disabled={!prompt.trim()}>Generate <span aria-hidden="true">↵</span></button>}</div>
-        <div className="metrics" aria-label="Inference metrics"><Metric label="Time to first token" value={metrics.ttftMs} unit="ms" title="Engine-reported time to first token"/><Metric label="Decode throughput" value={metrics.decodeTokensPerSecond} unit="tok/s" title="Engine-reported decode throughput"/><Metric label="Output tokens" value={metrics.outputTokens} unit="tokens" title="Actual tokenizer count reported by the engine"/><Metric label="Total latency" value={metrics.totalLatencyMs === undefined ? undefined : metrics.totalLatencyMs / 1000} unit="s" title="Engine-reported total latency"/></div>
+            <EngineControl generating={busy} onStatusChange={setEngineStatus} snapshot={snapshot ? { ...snapshot, stale: snapshot.stale || engineStatus.label !== 'ready' } : null} infoError={infoError}/>
+            <div className="controls flex flex-wrap items-center justify-between gap-4"><div className="flex flex-wrap items-center gap-5">
+              <label>Max tokens <input type="number" min="1" max={info?.maxOutputTokens ?? 64} value={maxTokens} onChange={event => setMaxTokens(Math.max(1, Math.min(info?.maxOutputTokens ?? 64, Number(event.target.value))))} disabled={busy || !info}/></label>
+              <label>Temperature <input type="number" min="0" step="0.1" value={temperature} onChange={event => { const value = Number(event.target.value); if (Number.isFinite(value)) setTemperature(Math.max(0, value)) }} disabled={busy || !info?.temperatureSampling}/></label>
+              <label>KV cache <select value={cacheMode} onChange={event => setCacheMode(event.target.value as CacheMode)} disabled={busy || !info}>{(info?.cacheModes ?? ['none']).map(mode => <option key={mode} value={mode}>{mode === 'none' ? 'None' : mode === 'dynamic' ? 'Dynamic' : 'Pooled'}</option>)}</select></label>
+              <label className="checkbox-label"><input type="checkbox" checked={decodeBatching} onChange={event => setDecodeBatching(event.target.checked)} disabled={busy || cacheMode !== 'pool' || !info?.decodeBatching}/> Decode batching</label>
+            </div>{busy ? <button type="button" className="generate" onClick={() => controller.current?.abort()}>Stop <span aria-hidden="true">■</span></button> : <button type="submit" form="generation-form" className="generate" disabled={!prompt.trim() || generationRetrySeconds > 0 || (!mock && !info)}>{generationRetrySeconds > 0 ? `Retry in ${generationRetrySeconds}s` : 'Generate'} <span aria-hidden="true">↵</span></button>}</div>
+        <MetricsView metrics={metrics}/>
+          {!mock && <Experiments snapshot={snapshot} request={{ prompt, model, maxTokens, temperature, kvCacheMode: cacheMode, decodeBatching }} disabled={busy || !info || generationRetrySeconds > 0}
+            onBegin={active => { if (controller.current) return false; controller.current = active; setExperimentBusy(true); return true }}
+            onEnd={active => { if (controller.current === active) controller.current = null; setExperimentBusy(false) }}/>} 
+          {generation && <p className="measurement-note">{generation.model ?? 'Model unreported'} · {generation.sampling ?? 'Sampling unreported'} · output cap {generation.max_tokens ?? maxTokens} tokens · latest request</p>}
         </section>
-        <div className="window-status"><span>{mock ? 'Sample mode. Max tokens and temperature apply to live requests only.' : 'POST /generate · JSON adapter'} </span><span className="resize-mark" aria-hidden="true">◩</span></div>
+        <div className="window-status"><span>{mock ? 'Sample playback. No model execution or measured performance.' : 'POST /generate · SSE · engine measurements'} </span><span className="resize-mark" aria-hidden="true">◩</span></div>
       </section>
       <div className="below-window flex flex-wrap justify-between gap-3"><p><span className="footnote-mark">↳</span> Built to understand what happens between prompt and token.</p><p className="mono">Enter to run · Shift + Enter for a new line · Ctrl + C to stop</p></div>
       <section className="mac-window overview" aria-labelledby="overview-title">
@@ -119,6 +170,7 @@ export default function App() {
         <div className="window-status"><span>Small surface. Deep stack.</span><span className="resize-mark" aria-hidden="true">◩</span></div>
       </section>
     </main>
+    {page === 'benchmarks' && <main className="page-shell flex-1"><Benchmarks/></main>}
     {page === 'blog' && <main className="page-shell blog-page flex-1"><Blog slug={slug}/></main>}
     <main className="page-shell about-page flex-1" hidden={page !== 'about'}>
       <div className="intro"><p className="eyebrow">A LITTLE CONTEXT</p><h1 id="about-heading" tabIndex={-1}>About me<span className="period">.</span></h1><p className="intro-description">The person behind the playground.</p></div>

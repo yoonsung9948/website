@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" role="img" aria-labelledby="title desc">
+<title id="title">Completion latency grows with concurrency</title><desc id="desc">20 successful requests per point · warmup excluded · tracing enabled. Orange dashed: no KV. Blue solid: KV.</desc>
+<rect width="960" height="480" fill="#fffdf7" rx="12"/>
+<g font-family="system-ui,sans-serif" fill="#293025">
+<text x="35" y="40" font-size="25" font-weight="600">Completion latency grows with concurrency</text>
+<text x="35" y="68" font-size="14">20 successful requests per point · warmup excluded · tracing enabled</text>
+<path d="M40 94h34" stroke="#b45309" stroke-width="3" stroke-dasharray="7 5"/>
+<text x="83" y="99" font-size="15">No KV cache</text>
+<path d="M260 94h34" stroke="#0369a1" stroke-width="3" />
+<text x="303" y="99" font-size="15">KV cache</text>
+<path d="M85 390.00H920" stroke="#e1e3db"/>
+<text x="73" y="395.00" text-anchor="end" font-size="13">0.0</text>
+<path d="M85 323.75H920" stroke="#e1e3db"/>
+<text x="73" y="328.75" text-anchor="end" font-size="13">3.0</text>
+<path d="M85 257.50H920" stroke="#e1e3db"/>
+<text x="73" y="262.50" text-anchor="end" font-size="13">6.1</text>
+<path d="M85 191.25H920" stroke="#e1e3db"/>
+<text x="73" y="196.25" text-anchor="end" font-size="13">9.1</text>
+<path d="M85 125.00H920" stroke="#e1e3db"/>
+<text x="73" y="130.00" text-anchor="end" font-size="13">12.1</text>
+<text x="293.75" y="415" text-anchor="middle" font-size="14">1</text>
+<text x="502.50" y="415" text-anchor="middle" font-size="14">2</text>
+<text x="920.00" y="415" text-anchor="middle" font-size="14">4</text>
+<polyline points="293.75,325.07 502.50,259.88 920.00,165.42" fill="none" stroke="#b45309" stroke-width="3" stroke-dasharray="7 5"/>
+<circle cx="293.75" cy="325.07" r="3.5" fill="#b45309"><title>No KV cache: 1, 2.976</title></circle>
+<circle cx="502.50" cy="259.88" r="3.5" fill="#b45309"><title>No KV cache: 2, 5.963</title></circle>
+<circle cx="920.00" cy="165.42" r="3.5" fill="#b45309"><title>No KV cache: 4, 10.292</title></circle>
+<polyline points="293.75,332.09 502.50,274.00 920.00,187.28" fill="none" stroke="#0369a1" stroke-width="3" />
+<circle cx="293.75" cy="332.09" r="3.5" fill="#0369a1"><title>KV cache: 1, 2.654</title></circle>
+<circle cx="502.50" cy="274.00" r="3.5" fill="#0369a1"><title>KV cache: 2, 5.316</title></circle>
+<circle cx="920.00" cy="187.28" r="3.5" fill="#0369a1"><title>KV cache: 4, 9.290</title></circle>
+<text x="500" y="451" text-anchor="middle" font-size="15">Outstanding requests</text>
+<text x="20" y="260" transform="rotate(-90 20 260)" text-anchor="middle" font-size="14">Client completion p50 (seconds)</text>
+</g></svg>

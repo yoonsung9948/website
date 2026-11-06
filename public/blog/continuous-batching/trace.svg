@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 590" role="img" aria-labelledby="title desc">
+<title id="title">Separate turns versus shared decode turns</title><desc id="desc">Diagnostic runs · C=4 · first four measured requests · independent zero points</desc>
+<rect width="960" height="590" rx="12" fill="#fffdf7"/>
+<g font-family="system-ui,sans-serif" fill="#293025">
+<text x="32" y="40" font-size="25" font-weight="600">Separate turns versus shared decode turns</text>
+<text x="32" y="68" font-size="14">Diagnostic runs · C=4 · first four measured requests · independent zero points</text>
+<text x="32" y="123" font-size="17" fill="#b45309">Pool, batching off · median runner 44.66 ms / wait 135.68 ms</text>
+<text x="32" y="157" font-size="14">Request 1</text>
+<path d="M140 163H920" stroke="#e0e3d9"/>
+<text x="32" y="192" font-size="14">Request 2</text>
+<path d="M140 198H920" stroke="#e0e3d9"/>
+<text x="32" y="227" font-size="14">Request 3</text>
+<path d="M140 233H920" stroke="#e0e3d9"/>
+<text x="32" y="262" font-size="14">Request 4</text>
+<path d="M140 268H920" stroke="#e0e3d9"/>
+<rect x="188.50" y="210" width="47.72" height="23" rx="3" fill="#b45309"><title>Step 26: 42.83 ms; batch 1; input 1; wait 130.36 ms</title></rect>
+<rect x="383.91" y="210" width="47.56" height="23" rx="3" fill="#b45309"><title>Step 27: 42.68 ms; batch 1; input 1; wait 132.40 ms</title></rect>
+<rect x="576.13" y="210" width="47.61" height="23" rx="3" fill="#b45309"><title>Step 28: 42.73 ms; batch 1; input 1; wait 129.70 ms</title></rect>
+<rect x="769.54" y="210" width="47.86" height="23" rx="3" fill="#b45309"><title>Step 29: 42.96 ms; batch 1; input 1; wait 130.70 ms</title></rect>
+<rect x="236.67" y="175" width="50.06" height="23" rx="3" fill="#b45309"><title>Step 21: 44.93 ms; batch 1; input 1; wait 130.26 ms</title></rect>
+<rect x="431.92" y="175" width="47.68" height="23" rx="3" fill="#b45309"><title>Step 22: 42.79 ms; batch 1; input 1; wait 130.14 ms</title></rect>
+<rect x="624.12" y="175" width="48.28" height="23" rx="3" fill="#b45309"><title>Step 23: 43.33 ms; batch 1; input 1; wait 129.57 ms</title></rect>
+<rect x="817.87" y="175" width="47.03" height="23" rx="3" fill="#b45309"><title>Step 24: 42.21 ms; batch 1; input 1; wait 130.33 ms</title></rect>
+<rect x="287.29" y="245" width="47.75" height="23" rx="3" fill="#b45309"><title>Step 22: 42.85 ms; batch 1; input 1; wait 132.41 ms</title></rect>
+<rect x="479.99" y="245" width="47.64" height="23" rx="3" fill="#b45309"><title>Step 23: 42.75 ms; batch 1; input 1; wait 129.94 ms</title></rect>
+<rect x="673.04" y="245" width="47.52" height="23" rx="3" fill="#b45309"><title>Step 24: 42.65 ms; batch 1; input 1; wait 130.31 ms</title></rect>
+<rect x="865.28" y="245" width="47.72" height="23" rx="3" fill="#b45309"><title>Step 25: 42.83 ms; batch 1; input 1; wait 129.71 ms</title></rect>
+<rect x="140.00" y="140" width="48.08" height="23" rx="3" fill="#b45309"><title>Step 20: 43.14 ms; batch 1; input 1; wait 130.42 ms</title></rect>
+<rect x="335.54" y="140" width="47.92" height="23" rx="3" fill="#b45309"><title>Step 21: 43.01 ms; batch 1; input 1; wait 132.19 ms</title></rect>
+<rect x="528.00" y="140" width="47.77" height="23" rx="3" fill="#b45309"><title>Step 22: 42.87 ms; batch 1; input 1; wait 129.57 ms</title></rect>
+<rect x="721.15" y="140" width="47.88" height="23" rx="3" fill="#b45309"><title>Step 23: 42.97 ms; batch 1; input 1; wait 130.33 ms</title></rect>
+<rect x="913.36" y="140" width="6.64" height="23" rx="3" fill="#b45309"><title>Step 24: 42.13 ms; batch 1; input 1; wait 129.38 ms</title></rect>
+<text x="140.0" y="298" text-anchor="middle" font-size="13">0</text>
+<text x="335.0" y="298" text-anchor="middle" font-size="13">175</text>
+<text x="530.0" y="298" text-anchor="middle" font-size="13">350</text>
+<text x="725.0" y="298" text-anchor="middle" font-size="13">525</text>
+<text x="920.0" y="298" text-anchor="middle" font-size="13">700</text>
+<text x="32" y="333" font-size="17" fill="#0369a1">Pool, batching on · median runner 53.62 ms / wait 0.48 ms</text>
+<text x="32" y="367" font-size="14">Request 1</text>
+<path d="M140 373H920" stroke="#e0e3d9"/>
+<text x="32" y="402" font-size="14">Request 2</text>
+<path d="M140 408H920" stroke="#e0e3d9"/>
+<text x="32" y="437" font-size="14">Request 3</text>
+<path d="M140 443H920" stroke="#e0e3d9"/>
+<text x="32" y="472" font-size="14">Request 4</text>
+<path d="M140 478H920" stroke="#e0e3d9"/>
+<rect x="140.04" y="455" width="59.45" height="23" rx="3" fill="#0369a1"><title>Step 19: 53.35 ms; batch 4; input 1; wait 0.54 ms</title></rect>
+<rect x="200.40" y="455" width="59.25" height="23" rx="3" fill="#0369a1"><title>Step 20: 53.17 ms; batch 4; input 1; wait 0.48 ms</title></rect>
+<rect x="260.55" y="455" width="59.44" height="23" rx="3" fill="#0369a1"><title>Step 21: 53.34 ms; batch 4; input 1; wait 0.48 ms</title></rect>
+<rect x="320.85" y="455" width="59.21" height="23" rx="3" fill="#0369a1"><title>Step 22: 53.13 ms; batch 4; input 1; wait 0.47 ms</title></rect>
+<rect x="380.91" y="455" width="59.19" height="23" rx="3" fill="#0369a1"><title>Step 23: 53.12 ms; batch 4; input 1; wait 0.45 ms</title></rect>
+<rect x="440.99" y="455" width="59.03" height="23" rx="3" fill="#0369a1"><title>Step 24: 52.97 ms; batch 4; input 1; wait 0.47 ms</title></rect>
+<rect x="500.93" y="455" width="59.76" height="23" rx="3" fill="#0369a1"><title>Step 25: 53.63 ms; batch 4; input 1; wait 0.50 ms</title></rect>
+<rect x="561.81" y="455" width="59.39" height="23" rx="3" fill="#0369a1"><title>Step 26: 53.30 ms; batch 4; input 1; wait 0.63 ms</title></rect>
+<rect x="622.23" y="455" width="59.52" height="23" rx="3" fill="#0369a1"><title>Step 27: 53.42 ms; batch 4; input 1; wait 0.58 ms</title></rect>
+<rect x="682.69" y="455" width="59.15" height="23" rx="3" fill="#0369a1"><title>Step 28: 53.08 ms; batch 4; input 1; wait 0.52 ms</title></rect>
+<rect x="742.71" y="455" width="59.12" height="23" rx="3" fill="#0369a1"><title>Step 29: 53.05 ms; batch 4; input 1; wait 0.48 ms</title></rect>
+<rect x="802.69" y="455" width="60.78" height="23" rx="3" fill="#0369a1"><title>Step 30: 54.54 ms; batch 4; input 1; wait 0.47 ms</title></rect>
+<rect x="864.87" y="455" width="55.13" height="23" rx="3" fill="#0369a1"><title>Step 31: 53.66 ms; batch 4; input 1; wait 0.73 ms</title></rect>
+<rect x="140.00" y="350" width="59.52" height="23" rx="3" fill="#0369a1"><title>Step 20: 53.41 ms; batch 4; input 1; wait 0.54 ms</title></rect>
+<rect x="200.36" y="350" width="59.32" height="23" rx="3" fill="#0369a1"><title>Step 21: 53.23 ms; batch 4; input 1; wait 0.49 ms</title></rect>
+<rect x="260.51" y="350" width="59.50" height="23" rx="3" fill="#0369a1"><title>Step 22: 53.40 ms; batch 4; input 1; wait 0.48 ms</title></rect>
+<rect x="320.81" y="350" width="59.27" height="23" rx="3" fill="#0369a1"><title>Step 23: 53.19 ms; batch 4; input 1; wait 0.47 ms</title></rect>
+<rect x="380.86" y="350" width="59.25" height="23" rx="3" fill="#0369a1"><title>Step 24: 53.18 ms; batch 4; input 1; wait 0.45 ms</title></rect>
+<rect x="440.95" y="350" width="59.09" height="23" rx="3" fill="#0369a1"><title>Step 25: 53.03 ms; batch 4; input 1; wait 0.48 ms</title></rect>
+<rect x="500.89" y="350" width="59.83" height="23" rx="3" fill="#0369a1"><title>Step 26: 53.70 ms; batch 4; input 1; wait 0.50 ms</title></rect>
+<rect x="561.77" y="350" width="59.46" height="23" rx="3" fill="#0369a1"><title>Step 27: 53.36 ms; batch 4; input 1; wait 0.63 ms</title></rect>
+<rect x="622.19" y="350" width="59.58" height="23" rx="3" fill="#0369a1"><title>Step 28: 53.47 ms; batch 4; input 1; wait 0.59 ms</title></rect>
+<rect x="682.65" y="350" width="59.21" height="23" rx="3" fill="#0369a1"><title>Step 29: 53.13 ms; batch 4; input 1; wait 0.53 ms</title></rect>
+<rect x="742.67" y="350" width="59.18" height="23" rx="3" fill="#0369a1"><title>Step 30: 53.11 ms; batch 4; input 1; wait 0.48 ms</title></rect>
+<rect x="802.65" y="350" width="60.89" height="23" rx="3" fill="#0369a1"><title>Step 31: 54.65 ms; batch 4; input 1; wait 0.47 ms</title></rect>
+<rect x="864.81" y="350" width="55.19" height="23" rx="3" fill="#0369a1"><title>Step 32: 53.73 ms; batch 4; input 1; wait 0.74 ms</title></rect>
+<rect x="140.00" y="420" width="59.52" height="23" rx="3" fill="#0369a1"><title>Step 21: 53.46 ms; batch 4; input 1; wait 0.54 ms</title></rect>
+<rect x="200.31" y="420" width="59.37" height="23" rx="3" fill="#0369a1"><title>Step 22: 53.28 ms; batch 4; input 1; wait 0.49 ms</title></rect>
+<rect x="260.47" y="420" width="59.56" height="23" rx="3" fill="#0369a1"><title>Step 23: 53.45 ms; batch 4; input 1; wait 0.49 ms</title></rect>
+<rect x="320.77" y="420" width="59.32" height="23" rx="3" fill="#0369a1"><title>Step 24: 53.24 ms; batch 4; input 1; wait 0.48 ms</title></rect>
+<rect x="380.82" y="420" width="59.31" height="23" rx="3" fill="#0369a1"><title>Step 25: 53.23 ms; batch 4; input 1; wait 0.46 ms</title></rect>
+<rect x="440.90" y="420" width="59.15" height="23" rx="3" fill="#0369a1"><title>Step 26: 53.09 ms; batch 4; input 1; wait 0.48 ms</title></rect>
+<rect x="500.84" y="420" width="59.89" height="23" rx="3" fill="#0369a1"><title>Step 27: 53.75 ms; batch 4; input 1; wait 0.51 ms</title></rect>
+<rect x="561.73" y="420" width="59.51" height="23" rx="3" fill="#0369a1"><title>Step 28: 53.41 ms; batch 4; input 1; wait 0.64 ms</title></rect>
+<rect x="622.15" y="420" width="59.64" height="23" rx="3" fill="#0369a1"><title>Step 29: 53.52 ms; batch 4; input 1; wait 0.59 ms</title></rect>
+<rect x="682.60" y="420" width="59.26" height="23" rx="3" fill="#0369a1"><title>Step 30: 53.18 ms; batch 4; input 1; wait 0.53 ms</title></rect>
+<rect x="742.63" y="420" width="59.24" height="23" rx="3" fill="#0369a1"><title>Step 31: 53.16 ms; batch 4; input 1; wait 0.49 ms</title></rect>
+<rect x="802.60" y="420" width="60.96" height="23" rx="3" fill="#0369a1"><title>Step 32: 54.71 ms; batch 4; input 1; wait 0.48 ms</title></rect>
+<rect x="864.77" y="420" width="55.23" height="23" rx="3" fill="#0369a1"><title>Step 33: 53.78 ms; batch 4; input 1; wait 0.74 ms</title></rect>
+<rect x="140.00" y="385" width="59.53" height="23" rx="3" fill="#0369a1"><title>Step 25: 53.53 ms; batch 4; input 1; wait 0.55 ms</title></rect>
+<rect x="200.25" y="385" width="59.44" height="23" rx="3" fill="#0369a1"><title>Step 26: 53.35 ms; batch 4; input 1; wait 0.50 ms</title></rect>
+<rect x="260.41" y="385" width="59.62" height="23" rx="3" fill="#0369a1"><title>Step 27: 53.51 ms; batch 4; input 1; wait 0.49 ms</title></rect>
+<rect x="320.71" y="385" width="59.39" height="23" rx="3" fill="#0369a1"><title>Step 28: 53.30 ms; batch 4; input 1; wait 0.48 ms</title></rect>
+<rect x="380.76" y="385" width="59.38" height="23" rx="3" fill="#0369a1"><title>Step 29: 53.29 ms; batch 4; input 1; wait 0.46 ms</title></rect>
+<rect x="440.84" y="385" width="59.22" height="23" rx="3" fill="#0369a1"><title>Step 30: 53.15 ms; batch 4; input 1; wait 0.49 ms</title></rect>
+<rect x="500.78" y="385" width="59.96" height="23" rx="3" fill="#0369a1"><title>Step 31: 53.81 ms; batch 4; input 1; wait 0.51 ms</title></rect>
+<rect x="561.67" y="385" width="59.58" height="23" rx="3" fill="#0369a1"><title>Step 32: 53.47 ms; batch 4; input 1; wait 0.65 ms</title></rect>
+<rect x="622.09" y="385" width="59.71" height="23" rx="3" fill="#0369a1"><title>Step 33: 53.58 ms; batch 4; input 1; wait 0.60 ms</title></rect>
+<rect x="682.55" y="385" width="59.33" height="23" rx="3" fill="#0369a1"><title>Step 34: 53.24 ms; batch 4; input 1; wait 0.54 ms</title></rect>
+<rect x="742.57" y="385" width="59.30" height="23" rx="3" fill="#0369a1"><title>Step 35: 53.22 ms; batch 4; input 1; wait 0.49 ms</title></rect>
+<rect x="802.55" y="385" width="61.03" height="23" rx="3" fill="#0369a1"><title>Step 36: 54.77 ms; batch 4; input 1; wait 0.49 ms</title></rect>
+<rect x="864.70" y="385" width="55.30" height="23" rx="3" fill="#0369a1"><title>Step 37: 53.85 ms; batch 4; input 1; wait 0.76 ms</title></rect>
+<text x="140.0" y="508" text-anchor="middle" font-size="13">0</text>
+<text x="335.0" y="508" text-anchor="middle" font-size="13">175</text>
+<text x="530.0" y="508" text-anchor="middle" font-size="13">350</text>
+<text x="725.0" y="508" text-anchor="middle" font-size="13">525</text>
+<text x="920.0" y="508" text-anchor="middle" font-size="13">700</text>
+<text x="480" y="571" text-anchor="middle" font-size="14">Milliseconds from request 1, step 20 · overlapping bars are request participations</text>
+</g></svg>

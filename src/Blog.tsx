@@ -1,11 +1,13 @@
 import { useMemo } from 'react'
+import TraceComparison from './TraceComparison'
+import { splitTraceArticle } from './lib/trace-comparison'
 import { findPost, formatDate, posts, renderMarkdown } from './lib/blog'
 
 function Tags({ tags }: { tags: string[] }) { return tags.length ? <ul className="post-tags" aria-label="Tags">{tags.map(tag => <li key={tag}>{tag}</li>)}</ul> : null }
 
 export default function Blog({ slug }: { slug?: string }) {
   const post = findPost(slug)
-  const html = useMemo(() => post ? renderMarkdown(post.body) : '', [post])
+  const sections = useMemo(() => post ? splitTraceArticle(post.body).map(renderMarkdown) : [], [post])
   if (slug && !post) return <>
     <div className="intro"><p className="eyebrow">404 / NOT FOUND</p><h1 id="blog-heading" tabIndex={-1}>No such post<span className="period">.</span></h1><p className="intro-description">There is nothing published at “{slug}”.</p></div>
     <a className="about-link" href="#blog">← All posts</a>
@@ -14,7 +16,7 @@ export default function Blog({ slug }: { slug?: string }) {
     <div className="intro"><p className="eyebrow">{formatDate(post.date) || 'UNDATED'} / {post.readingMinutes} MIN READ{post.draft ? ' / DRAFT' : ''}</p><h1 id="blog-heading" tabIndex={-1}>{post.title}<span className="period">.</span></h1>{post.summary && <p className="intro-description">{post.summary}</p>}</div>
     <article className="mac-window" aria-labelledby="post-title">
       <div className="window-title"><span className="window-box" aria-hidden="true"/><div className="title-lines" aria-hidden="true"/><h2 id="post-title">blog — {post.slug}.md</h2><div className="title-lines" aria-hidden="true"/></div>
-      <div className="post-body prose" dangerouslySetInnerHTML={{ __html: html }}/>
+      <div className="post-body prose">{sections.map((html, index) => <div className="post-section" key={`${post.slug}-${index}`}><div dangerouslySetInnerHTML={{ __html: html }}/>{index < sections.length - 1 && <TraceComparison key={`${post.slug}-trace-${index}`}/>}</div>)}</div>
       <div className="window-status"><a href="#blog">← All posts</a><Tags tags={post.tags}/></div>
     </article>
   </>

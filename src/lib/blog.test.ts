@@ -30,3 +30,13 @@ describe('blog content', () => {
     expect(routeFromHash('#blog/my%20post/')).toEqual({ page: 'blog', slug: 'my post' })
   })
 })
+
+
+it('keeps the benchmark article as a development-only draft', () => {
+  const files = import.meta.glob('../../content/blog/*.md', { query: '?raw', import: 'default', eager: true }) as Record<string, string>
+  expect(loadPosts(files, false).find(post => post.slug === 'kv-cache-baseline')).toBeUndefined()
+  const draft = loadPosts(files, true).find(post => post.slug === 'kv-cache-baseline')!
+  expect(draft.draft).toBe(true)
+  expect(draft.body).toContain('20.77')
+  expect(draft.body).toContain('/blog/kv-cache-baseline/steps.svg')
+})

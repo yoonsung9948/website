@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" role="img" aria-labelledby="title desc">
+<title id="title">Completion latency at the same concurrency</title><desc id="desc">Same pooled cache · 20 successful requests per point · one trial per configuration</desc>
+<rect width="960" height="480" rx="12" fill="#fffdf7"/>
+<g font-family="system-ui,sans-serif" fill="#293025">
+<text x="32" y="40" font-size="25" font-weight="600">Completion latency at the same concurrency</text>
+<text x="32" y="68" font-size="14">Same pooled cache · 20 successful requests per point · one trial per configuration</text>
+<path d="M90 390.0H910" stroke="#e0e3d9"/>
+<text x="78" y="395.0" text-anchor="end" font-size="13">0</text>
+<path d="M90 327.5H910" stroke="#e0e3d9"/>
+<text x="78" y="332.5" text-anchor="end" font-size="13">3.5</text>
+<path d="M90 265.0H910" stroke="#e0e3d9"/>
+<text x="78" y="270.0" text-anchor="end" font-size="13">7</text>
+<path d="M90 202.5H910" stroke="#e0e3d9"/>
+<text x="78" y="207.5" text-anchor="end" font-size="13">10.5</text>
+<path d="M90 140.0H910" stroke="#e0e3d9"/>
+<text x="78" y="145.0" text-anchor="end" font-size="13">14</text>
+<text x="90.0" y="416" text-anchor="middle" font-size="14">1</text>
+<text x="363.3333333333333" y="416" text-anchor="middle" font-size="14">2</text>
+<text x="910.0" y="416" text-anchor="middle" font-size="14">4</text>
+<path d="M40 100h35" stroke="#b45309" stroke-width="3" stroke-dasharray="7 5"/>
+<text x="85" y="105" font-size="15">Pool, batching off</text>
+<polyline points="90.0,330.6462667435075 363.3333333333333,275.76156212366186 910.0,180.4018835522168" fill="none" stroke="#b45309" stroke-width="3" stroke-dasharray="7 5"/>
+<rect x="86.0" y="326.6462667435075" width="8" height="8" fill="#b45309"/>
+<text x="98.0" y="352.6462667435075" text-anchor="start" font-size="14" fill="#b45309">3.32</text>
+<rect x="359.3333333333333" y="271.76156212366186" width="8" height="8" fill="#b45309"/>
+<text x="371.3333333333333" y="297.76156212366186" text-anchor="start" font-size="14" fill="#b45309">6.40</text>
+<rect x="906.0" y="176.4018835522168" width="8" height="8" fill="#b45309"/>
+<text x="902.0" y="202.4018835522168" text-anchor="end" font-size="14" fill="#b45309">11.74</text>
+<path d="M370 100h35" stroke="#0369a1" stroke-width="3" />
+<text x="415" y="105" font-size="15">Pool, batching on</text>
+<polyline points="90.0,332.44186421357364 363.3333333333333,330.6846305771199 910.0,318.5853935954427" fill="none" stroke="#0369a1" stroke-width="3" />
+<circle cx="90.0" cy="332.44186421357364" r="5" fill="#0369a1"/>
+<text x="98.0" y="320.44186421357364" text-anchor="start" font-size="14" fill="#0369a1">3.22</text>
+<circle cx="363.3333333333333" cy="330.6846305771199" r="5" fill="#0369a1"/>
+<text x="371.3333333333333" y="318.6846305771199" text-anchor="start" font-size="14" fill="#0369a1">3.32</text>
+<circle cx="910.0" cy="318.5853935954427" r="5" fill="#0369a1"/>
+<text x="902.0" y="306.5853935954427" text-anchor="end" font-size="14" fill="#0369a1">4.00</text>
+<text x="32" y="130" font-size="13">Client completion p50, seconds</text>
+<text x="500" y="459" font-size="14" text-anchor="middle">Outstanding client requests</text>
+</g></svg>

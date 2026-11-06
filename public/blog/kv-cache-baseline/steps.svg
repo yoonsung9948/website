@@ -1,0 +1,159 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" role="img" aria-labelledby="title desc">
+<title id="title">Cached decoding avoids the growing prefix</title><desc id="desc">Concurrency 1 · each point is a median over 20 requests · first token excluded. Orange dashed: no KV. Blue solid: KV.</desc>
+<rect width="960" height="480" fill="#fffdf7" rx="12"/>
+<g font-family="system-ui,sans-serif" fill="#293025">
+<text x="35" y="40" font-size="25" font-weight="600">Cached decoding avoids the growing prefix</text>
+<text x="35" y="68" font-size="14">Concurrency 1 · each point is a median over 20 requests · first token excluded</text>
+<path d="M40 94h34" stroke="#b45309" stroke-width="3" stroke-dasharray="7 5"/>
+<text x="83" y="99" font-size="15">No KV cache</text>
+<path d="M260 94h34" stroke="#0369a1" stroke-width="3" />
+<text x="303" y="99" font-size="15">KV cache</text>
+<path d="M85 390.00H920" stroke="#e1e3db"/>
+<text x="73" y="395.00" text-anchor="end" font-size="13">0.0</text>
+<path d="M85 323.75H920" stroke="#e1e3db"/>
+<text x="73" y="328.75" text-anchor="end" font-size="13">12.7</text>
+<path d="M85 257.50H920" stroke="#e1e3db"/>
+<text x="73" y="262.50" text-anchor="end" font-size="13">25.4</text>
+<path d="M85 191.25H920" stroke="#e1e3db"/>
+<text x="73" y="196.25" text-anchor="end" font-size="13">38.1</text>
+<path d="M85 125.00H920" stroke="#e1e3db"/>
+<text x="73" y="130.00" text-anchor="end" font-size="13">50.8</text>
+<text x="98.25" y="415" text-anchor="middle" font-size="14">1</text>
+<text x="297.06" y="415" text-anchor="middle" font-size="14">16</text>
+<text x="509.13" y="415" text-anchor="middle" font-size="14">32</text>
+<text x="628.41" y="415" text-anchor="middle" font-size="14">41</text>
+<text x="721.19" y="415" text-anchor="middle" font-size="14">48</text>
+<text x="920.00" y="415" text-anchor="middle" font-size="14">63</text>
+<polyline points="98.25,182.47 111.51,193.96 124.76,194.57 138.02,194.49 151.27,194.33 164.52,194.32 177.78,193.86 191.03,190.22 204.29,189.35 217.54,189.42 230.79,189.14 244.05,188.97 257.30,188.70 270.56,188.70 283.81,188.45 297.06,191.63 310.32,191.39 323.57,191.13 336.83,190.46 350.08,189.84 363.33,189.81 376.59,189.39 389.84,189.48 403.10,189.32 416.35,188.99 429.60,188.78 442.86,188.99 456.11,188.90 469.37,188.57 482.62,188.36 495.87,188.04 509.13,188.19 522.38,186.52 535.63,186.39 548.89,186.03 562.14,185.84 575.40,185.36 588.65,184.92 601.90,184.95 615.16,185.40 628.41,169.53 641.67,169.68 654.92,169.52 668.17,169.01 681.43,168.96 694.68,168.48 707.94,168.56 721.19,168.46 734.44,168.25 747.70,168.36 760.95,167.96 774.21,167.58 787.46,167.57 800.71,167.60 813.97,166.14 827.22,166.02 840.48,165.81 853.73,165.42 866.98,172.26 880.24,171.67 893.49,171.29 906.75,170.64 920.00,170.80" fill="none" stroke="#b45309" stroke-width="3" stroke-dasharray="7 5"/>
+<circle cx="98.25" cy="182.47" r="3.5" fill="#b45309"><title>No KV cache: 1, 39.753</title></circle>
+<circle cx="111.51" cy="193.96" r="3.5" fill="#b45309"><title>No KV cache: 2, 37.551</title></circle>
+<circle cx="124.76" cy="194.57" r="3.5" fill="#b45309"><title>No KV cache: 3, 37.435</title></circle>
+<circle cx="138.02" cy="194.49" r="3.5" fill="#b45309"><title>No KV cache: 4, 37.450</title></circle>
+<circle cx="151.27" cy="194.33" r="3.5" fill="#b45309"><title>No KV cache: 5, 37.481</title></circle>
+<circle cx="164.52" cy="194.32" r="3.5" fill="#b45309"><title>No KV cache: 6, 37.483</title></circle>
+<circle cx="177.78" cy="193.86" r="3.5" fill="#b45309"><title>No KV cache: 7, 37.570</title></circle>
+<circle cx="191.03" cy="190.22" r="3.5" fill="#b45309"><title>No KV cache: 8, 38.267</title></circle>
+<circle cx="204.29" cy="189.35" r="3.5" fill="#b45309"><title>No KV cache: 9, 38.434</title></circle>
+<circle cx="217.54" cy="189.42" r="3.5" fill="#b45309"><title>No KV cache: 10, 38.422</title></circle>
+<circle cx="230.79" cy="189.14" r="3.5" fill="#b45309"><title>No KV cache: 11, 38.475</title></circle>
+<circle cx="244.05" cy="188.97" r="3.5" fill="#b45309"><title>No KV cache: 12, 38.507</title></circle>
+<circle cx="257.30" cy="188.70" r="3.5" fill="#b45309"><title>No KV cache: 13, 38.560</title></circle>
+<circle cx="270.56" cy="188.70" r="3.5" fill="#b45309"><title>No KV cache: 14, 38.559</title></circle>
+<circle cx="283.81" cy="188.45" r="3.5" fill="#b45309"><title>No KV cache: 15, 38.608</title></circle>
+<circle cx="297.06" cy="191.63" r="3.5" fill="#b45309"><title>No KV cache: 16, 37.997</title></circle>
+<circle cx="310.32" cy="191.39" r="3.5" fill="#b45309"><title>No KV cache: 17, 38.043</title></circle>
+<circle cx="323.57" cy="191.13" r="3.5" fill="#b45309"><title>No KV cache: 18, 38.095</title></circle>
+<circle cx="336.83" cy="190.46" r="3.5" fill="#b45309"><title>No KV cache: 19, 38.223</title></circle>
+<circle cx="350.08" cy="189.84" r="3.5" fill="#b45309"><title>No KV cache: 20, 38.341</title></circle>
+<circle cx="363.33" cy="189.81" r="3.5" fill="#b45309"><title>No KV cache: 21, 38.346</title></circle>
+<circle cx="376.59" cy="189.39" r="3.5" fill="#b45309"><title>No KV cache: 22, 38.427</title></circle>
+<circle cx="389.84" cy="189.48" r="3.5" fill="#b45309"><title>No KV cache: 23, 38.410</title></circle>
+<circle cx="403.10" cy="189.32" r="3.5" fill="#b45309"><title>No KV cache: 24, 38.440</title></circle>
+<circle cx="416.35" cy="188.99" r="3.5" fill="#b45309"><title>No KV cache: 25, 38.505</title></circle>
+<circle cx="429.60" cy="188.78" r="3.5" fill="#b45309"><title>No KV cache: 26, 38.545</title></circle>
+<circle cx="442.86" cy="188.99" r="3.5" fill="#b45309"><title>No KV cache: 27, 38.503</title></circle>
+<circle cx="456.11" cy="188.90" r="3.5" fill="#b45309"><title>No KV cache: 28, 38.520</title></circle>
+<circle cx="469.37" cy="188.57" r="3.5" fill="#b45309"><title>No KV cache: 29, 38.583</title></circle>
+<circle cx="482.62" cy="188.36" r="3.5" fill="#b45309"><title>No KV cache: 30, 38.623</title></circle>
+<circle cx="495.87" cy="188.04" r="3.5" fill="#b45309"><title>No KV cache: 31, 38.685</title></circle>
+<circle cx="509.13" cy="188.19" r="3.5" fill="#b45309"><title>No KV cache: 32, 38.656</title></circle>
+<circle cx="522.38" cy="186.52" r="3.5" fill="#b45309"><title>No KV cache: 33, 38.976</title></circle>
+<circle cx="535.63" cy="186.39" r="3.5" fill="#b45309"><title>No KV cache: 34, 39.002</title></circle>
+<circle cx="548.89" cy="186.03" r="3.5" fill="#b45309"><title>No KV cache: 35, 39.071</title></circle>
+<circle cx="562.14" cy="185.84" r="3.5" fill="#b45309"><title>No KV cache: 36, 39.107</title></circle>
+<circle cx="575.40" cy="185.36" r="3.5" fill="#b45309"><title>No KV cache: 37, 39.199</title></circle>
+<circle cx="588.65" cy="184.92" r="3.5" fill="#b45309"><title>No KV cache: 38, 39.284</title></circle>
+<circle cx="601.90" cy="184.95" r="3.5" fill="#b45309"><title>No KV cache: 39, 39.278</title></circle>
+<circle cx="615.16" cy="185.40" r="3.5" fill="#b45309"><title>No KV cache: 40, 39.191</title></circle>
+<circle cx="628.41" cy="169.53" r="3.5" fill="#b45309"><title>No KV cache: 41, 42.232</title></circle>
+<circle cx="641.67" cy="169.68" r="3.5" fill="#b45309"><title>No KV cache: 42, 42.203</title></circle>
+<circle cx="654.92" cy="169.52" r="3.5" fill="#b45309"><title>No KV cache: 43, 42.234</title></circle>
+<circle cx="668.17" cy="169.01" r="3.5" fill="#b45309"><title>No KV cache: 44, 42.330</title></circle>
+<circle cx="681.43" cy="168.96" r="3.5" fill="#b45309"><title>No KV cache: 45, 42.341</title></circle>
+<circle cx="694.68" cy="168.48" r="3.5" fill="#b45309"><title>No KV cache: 46, 42.432</title></circle>
+<circle cx="707.94" cy="168.56" r="3.5" fill="#b45309"><title>No KV cache: 47, 42.417</title></circle>
+<circle cx="721.19" cy="168.46" r="3.5" fill="#b45309"><title>No KV cache: 48, 42.436</title></circle>
+<circle cx="734.44" cy="168.25" r="3.5" fill="#b45309"><title>No KV cache: 49, 42.477</title></circle>
+<circle cx="747.70" cy="168.36" r="3.5" fill="#b45309"><title>No KV cache: 50, 42.456</title></circle>
+<circle cx="760.95" cy="167.96" r="3.5" fill="#b45309"><title>No KV cache: 51, 42.531</title></circle>
+<circle cx="774.21" cy="167.58" r="3.5" fill="#b45309"><title>No KV cache: 52, 42.604</title></circle>
+<circle cx="787.46" cy="167.57" r="3.5" fill="#b45309"><title>No KV cache: 53, 42.606</title></circle>
+<circle cx="800.71" cy="167.60" r="3.5" fill="#b45309"><title>No KV cache: 54, 42.601</title></circle>
+<circle cx="813.97" cy="166.14" r="3.5" fill="#b45309"><title>No KV cache: 55, 42.881</title></circle>
+<circle cx="827.22" cy="166.02" r="3.5" fill="#b45309"><title>No KV cache: 56, 42.904</title></circle>
+<circle cx="840.48" cy="165.81" r="3.5" fill="#b45309"><title>No KV cache: 57, 42.944</title></circle>
+<circle cx="853.73" cy="165.42" r="3.5" fill="#b45309"><title>No KV cache: 58, 43.018</title></circle>
+<circle cx="866.98" cy="172.26" r="3.5" fill="#b45309"><title>No KV cache: 59, 41.709</title></circle>
+<circle cx="880.24" cy="171.67" r="3.5" fill="#b45309"><title>No KV cache: 60, 41.821</title></circle>
+<circle cx="893.49" cy="171.29" r="3.5" fill="#b45309"><title>No KV cache: 61, 41.894</title></circle>
+<circle cx="906.75" cy="170.64" r="3.5" fill="#b45309"><title>No KV cache: 62, 42.019</title></circle>
+<circle cx="920.00" cy="170.80" r="3.5" fill="#b45309"><title>No KV cache: 63, 41.988</title></circle>
+<polyline points="98.25,184.89 111.51,202.82 124.76,205.62 138.02,200.38 151.27,202.47 164.52,202.58 177.78,204.72 191.03,203.85 204.29,202.23 217.54,204.05 230.79,204.33 244.05,202.56 257.30,203.38 270.56,204.57 283.81,204.68 297.06,202.27 310.32,202.59 323.57,204.50 336.83,203.51 350.08,202.77 363.33,205.29 376.59,205.17 389.84,204.20 403.10,205.35 416.35,205.25 429.60,204.24 442.86,204.67 456.11,202.14 469.37,206.10 482.62,205.00 495.87,205.17 509.13,205.52 522.38,205.48 535.63,205.27 548.89,206.17 562.14,205.78 575.40,205.47 588.65,204.41 601.90,205.09 615.16,205.02 628.41,201.74 641.67,205.20 654.92,205.23 668.17,204.52 681.43,204.50 694.68,205.60 707.94,204.30 721.19,205.28 734.44,202.96 747.70,202.11 760.95,205.16 774.21,204.71 787.46,205.49 800.71,204.61 813.97,205.28 827.22,205.36 840.48,204.26 853.73,204.21 866.98,205.62 880.24,201.14 893.49,202.91 906.75,205.02 920.00,205.53" fill="none" stroke="#0369a1" stroke-width="3" />
+<circle cx="98.25" cy="184.89" r="3.5" fill="#0369a1"><title>KV cache: 1, 39.289</title></circle>
+<circle cx="111.51" cy="202.82" r="3.5" fill="#0369a1"><title>KV cache: 2, 35.855</title></circle>
+<circle cx="124.76" cy="205.62" r="3.5" fill="#0369a1"><title>KV cache: 3, 35.318</title></circle>
+<circle cx="138.02" cy="200.38" r="3.5" fill="#0369a1"><title>KV cache: 4, 36.321</title></circle>
+<circle cx="151.27" cy="202.47" r="3.5" fill="#0369a1"><title>KV cache: 5, 35.922</title></circle>
+<circle cx="164.52" cy="202.58" r="3.5" fill="#0369a1"><title>KV cache: 6, 35.901</title></circle>
+<circle cx="177.78" cy="204.72" r="3.5" fill="#0369a1"><title>KV cache: 7, 35.491</title></circle>
+<circle cx="191.03" cy="203.85" r="3.5" fill="#0369a1"><title>KV cache: 8, 35.657</title></circle>
+<circle cx="204.29" cy="202.23" r="3.5" fill="#0369a1"><title>KV cache: 9, 35.968</title></circle>
+<circle cx="217.54" cy="204.05" r="3.5" fill="#0369a1"><title>KV cache: 10, 35.619</title></circle>
+<circle cx="230.79" cy="204.33" r="3.5" fill="#0369a1"><title>KV cache: 11, 35.566</title></circle>
+<circle cx="244.05" cy="202.56" r="3.5" fill="#0369a1"><title>KV cache: 12, 35.905</title></circle>
+<circle cx="257.30" cy="203.38" r="3.5" fill="#0369a1"><title>KV cache: 13, 35.748</title></circle>
+<circle cx="270.56" cy="204.57" r="3.5" fill="#0369a1"><title>KV cache: 14, 35.519</title></circle>
+<circle cx="283.81" cy="204.68" r="3.5" fill="#0369a1"><title>KV cache: 15, 35.499</title></circle>
+<circle cx="297.06" cy="202.27" r="3.5" fill="#0369a1"><title>KV cache: 16, 35.959</title></circle>
+<circle cx="310.32" cy="202.59" r="3.5" fill="#0369a1"><title>KV cache: 17, 35.898</title></circle>
+<circle cx="323.57" cy="204.50" r="3.5" fill="#0369a1"><title>KV cache: 18, 35.532</title></circle>
+<circle cx="336.83" cy="203.51" r="3.5" fill="#0369a1"><title>KV cache: 19, 35.722</title></circle>
+<circle cx="350.08" cy="202.77" r="3.5" fill="#0369a1"><title>KV cache: 20, 35.865</title></circle>
+<circle cx="363.33" cy="205.29" r="3.5" fill="#0369a1"><title>KV cache: 21, 35.381</title></circle>
+<circle cx="376.59" cy="205.17" r="3.5" fill="#0369a1"><title>KV cache: 22, 35.404</title></circle>
+<circle cx="389.84" cy="204.20" r="3.5" fill="#0369a1"><title>KV cache: 23, 35.590</title></circle>
+<circle cx="403.10" cy="205.35" r="3.5" fill="#0369a1"><title>KV cache: 24, 35.370</title></circle>
+<circle cx="416.35" cy="205.25" r="3.5" fill="#0369a1"><title>KV cache: 25, 35.389</title></circle>
+<circle cx="429.60" cy="204.24" r="3.5" fill="#0369a1"><title>KV cache: 26, 35.583</title></circle>
+<circle cx="442.86" cy="204.67" r="3.5" fill="#0369a1"><title>KV cache: 27, 35.500</title></circle>
+<circle cx="456.11" cy="202.14" r="3.5" fill="#0369a1"><title>KV cache: 28, 35.984</title></circle>
+<circle cx="469.37" cy="206.10" r="3.5" fill="#0369a1"><title>KV cache: 29, 35.226</title></circle>
+<circle cx="482.62" cy="205.00" r="3.5" fill="#0369a1"><title>KV cache: 30, 35.437</title></circle>
+<circle cx="495.87" cy="205.17" r="3.5" fill="#0369a1"><title>KV cache: 31, 35.404</title></circle>
+<circle cx="509.13" cy="205.52" r="3.5" fill="#0369a1"><title>KV cache: 32, 35.338</title></circle>
+<circle cx="522.38" cy="205.48" r="3.5" fill="#0369a1"><title>KV cache: 33, 35.346</title></circle>
+<circle cx="535.63" cy="205.27" r="3.5" fill="#0369a1"><title>KV cache: 34, 35.386</title></circle>
+<circle cx="548.89" cy="206.17" r="3.5" fill="#0369a1"><title>KV cache: 35, 35.213</title></circle>
+<circle cx="562.14" cy="205.78" r="3.5" fill="#0369a1"><title>KV cache: 36, 35.288</title></circle>
+<circle cx="575.40" cy="205.47" r="3.5" fill="#0369a1"><title>KV cache: 37, 35.347</title></circle>
+<circle cx="588.65" cy="204.41" r="3.5" fill="#0369a1"><title>KV cache: 38, 35.551</title></circle>
+<circle cx="601.90" cy="205.09" r="3.5" fill="#0369a1"><title>KV cache: 39, 35.420</title></circle>
+<circle cx="615.16" cy="205.02" r="3.5" fill="#0369a1"><title>KV cache: 40, 35.434</title></circle>
+<circle cx="628.41" cy="201.74" r="3.5" fill="#0369a1"><title>KV cache: 41, 36.062</title></circle>
+<circle cx="641.67" cy="205.20" r="3.5" fill="#0369a1"><title>KV cache: 42, 35.399</title></circle>
+<circle cx="654.92" cy="205.23" r="3.5" fill="#0369a1"><title>KV cache: 43, 35.392</title></circle>
+<circle cx="668.17" cy="204.52" r="3.5" fill="#0369a1"><title>KV cache: 44, 35.529</title></circle>
+<circle cx="681.43" cy="204.50" r="3.5" fill="#0369a1"><title>KV cache: 45, 35.532</title></circle>
+<circle cx="694.68" cy="205.60" r="3.5" fill="#0369a1"><title>KV cache: 46, 35.322</title></circle>
+<circle cx="707.94" cy="204.30" r="3.5" fill="#0369a1"><title>KV cache: 47, 35.571</title></circle>
+<circle cx="721.19" cy="205.28" r="3.5" fill="#0369a1"><title>KV cache: 48, 35.383</title></circle>
+<circle cx="734.44" cy="202.96" r="3.5" fill="#0369a1"><title>KV cache: 49, 35.828</title></circle>
+<circle cx="747.70" cy="202.11" r="3.5" fill="#0369a1"><title>KV cache: 50, 35.991</title></circle>
+<circle cx="760.95" cy="205.16" r="3.5" fill="#0369a1"><title>KV cache: 51, 35.407</title></circle>
+<circle cx="774.21" cy="204.71" r="3.5" fill="#0369a1"><title>KV cache: 52, 35.493</title></circle>
+<circle cx="787.46" cy="205.49" r="3.5" fill="#0369a1"><title>KV cache: 53, 35.344</title></circle>
+<circle cx="800.71" cy="204.61" r="3.5" fill="#0369a1"><title>KV cache: 54, 35.511</title></circle>
+<circle cx="813.97" cy="205.28" r="3.5" fill="#0369a1"><title>KV cache: 55, 35.383</title></circle>
+<circle cx="827.22" cy="205.36" r="3.5" fill="#0369a1"><title>KV cache: 56, 35.369</title></circle>
+<circle cx="840.48" cy="204.26" r="3.5" fill="#0369a1"><title>KV cache: 57, 35.579</title></circle>
+<circle cx="853.73" cy="204.21" r="3.5" fill="#0369a1"><title>KV cache: 58, 35.588</title></circle>
+<circle cx="866.98" cy="205.62" r="3.5" fill="#0369a1"><title>KV cache: 59, 35.318</title></circle>
+<circle cx="880.24" cy="201.14" r="3.5" fill="#0369a1"><title>KV cache: 60, 36.176</title></circle>
+<circle cx="893.49" cy="202.91" r="3.5" fill="#0369a1"><title>KV cache: 61, 35.837</title></circle>
+<circle cx="906.75" cy="205.02" r="3.5" fill="#0369a1"><title>KV cache: 62, 35.433</title></circle>
+<circle cx="920.00" cy="205.53" r="3.5" fill="#0369a1"><title>KV cache: 63, 35.336</title></circle>
+<path d="M628.41 125V390" stroke="#727768" stroke-dasharray="3 4"/>
+<text x="620.41" y="141" text-anchor="end" font-size="13">Uncached prefix reaches 65 tokens</text>
+<text x="500" y="451" text-anchor="middle" font-size="15">Generated-token step index (zero-based)</text>
+<text x="20" y="260" transform="rotate(-90 20 260)" text-anchor="middle" font-size="14">Runner step duration (ms)</text>
+</g></svg>

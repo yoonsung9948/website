@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 440" role="img" aria-labelledby="title desc">
+<title id="title">The whole-window allocation peak stayed flat</title><desc id="desc">Process CUDA allocator · additional peak above idle · zero-based scale</desc>
+<rect width="960" height="440" rx="12" fill="#fffdf7"/>
+<g font-family="system-ui,sans-serif" fill="#293025">
+<text x="32" y="40" font-size="25" font-weight="600">The whole-window allocation peak stayed flat</text>
+<text x="32" y="68" font-size="14">Process CUDA allocator · additional peak above idle · zero-based scale</text>
+<text x="32" y="106" font-size="16">Idle allocation: 16.391 GiB, including the fixed 1.125 GiB KV pool</text>
+<text x="32" y="171" font-size="14">C=1 · off</text>
+<rect x="155" y="155" width="442.8701171875" height="21" rx="3" fill="#b45309"/>
+<text x="607.8701171875" y="171" font-size="14">7.14 MiB</text>
+<text x="32" y="208" font-size="14">C=1 · on</text>
+<rect x="155" y="192" width="442.8701171875" height="21" rx="3" fill="#0369a1"/>
+<text x="607.8701171875" y="208" font-size="14">7.14 MiB</text>
+<text x="32" y="245" font-size="14">C=2 · off</text>
+<rect x="155" y="229" width="442.8701171875" height="21" rx="3" fill="#b45309"/>
+<text x="607.8701171875" y="245" font-size="14">7.14 MiB</text>
+<text x="32" y="282" font-size="14">C=2 · on</text>
+<rect x="155" y="266" width="442.8701171875" height="21" rx="3" fill="#0369a1"/>
+<text x="607.8701171875" y="282" font-size="14">7.14 MiB</text>
+<text x="32" y="319" font-size="14">C=4 · off</text>
+<rect x="155" y="303" width="442.8701171875" height="21" rx="3" fill="#b45309"/>
+<text x="607.8701171875" y="319" font-size="14">7.14 MiB</text>
+<text x="32" y="356" font-size="14">C=4 · on</text>
+<rect x="155" y="340" width="442.8701171875" height="21" rx="3" fill="#0369a1"/>
+<text x="607.8701171875" y="356" font-size="14">7.14 MiB</text>
+<text x="155" y="414" font-size="14">0                          Peak above idle; scale ends at 10 MiB</text>
+</g></svg>

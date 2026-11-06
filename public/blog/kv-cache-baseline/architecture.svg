@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 350" role="img" aria-labelledby="title desc">
+<title id="title">Benchmark requests and traces follow separate paths</title><desc id="desc">Loadgen on the Mac sends HTTP requests to Go, which forwards generation to Python on RunPod. Both services export traces to the local Collector. Python exports through an HTTPS tunnel. Collector writes files and exports to Jaeger.</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="#62665d"/></marker></defs>
+<rect width="960" height="350" rx="12" fill="#fffdf7"/>
+<g font-family="system-ui,sans-serif" fill="#293025" text-anchor="middle">
+<text x="480" y="35" font-size="23" font-weight="600">Request path and diagnostic telemetry</text>
+<g fill="#eef0e8" stroke="#a8afa0"><rect x="30" y="70" width="210" height="65" rx="8"/><rect x="340" y="70" width="240" height="65" rx="8"/><rect x="700" y="70" width="230" height="65" rx="8"/><rect x="340" y="220" width="240" height="65" rx="8"/><rect x="700" y="220" width="230" height="65" rx="8"/></g>
+<g font-size="17"><text x="135" y="98">Loadgen · Mac</text><text x="460" y="98">Go control plane · Mac</text><text x="815" y="98">Python engine · RunPod</text><text x="460" y="248">OTel Collector · Mac</text><text x="815" y="248">Jaeger + trace archive</text></g>
+<g font-size="13" fill="#62665d"><text x="135" y="120">Saved request measurements</text><text x="460" y="120">Admission + streaming relay</text><text x="815" y="120">Custom Qwen3 + optional KV</text><text x="460" y="270">Batched span ingestion</text><text x="815" y="270">Interactive view + offline files</text><text x="290" y="88">HTTP</text><text x="640" y="88">HTTP / stream</text><text x="460" y="180">OTLP</text><text x="755" y="180">OTLP through HTTPS tunnel</text></g>
+<g fill="none" stroke="#62665d" stroke-width="2" marker-end="url(#arrow)"><path d="M240 105H337"/><path d="M580 105H697"/><path d="M460 135V217"/><path d="M815 135V195H550V217"/><path d="M580 253H697"/></g>
+<text x="480" y="324" font-size="14">The benchmark targets Go directly; browser rendering and the frontend proxy are outside these measurements.</text>
+</g></svg>
